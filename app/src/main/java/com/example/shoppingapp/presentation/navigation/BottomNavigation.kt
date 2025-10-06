@@ -1,5 +1,10 @@
 package com.example.shoppingapp.presentation.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -62,16 +67,18 @@ fun BottomNavigation() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            if (showBottomNav.value){
+            AnimatedVisibility(
+                visible = showBottomNav.value,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 BottomNavigationBar(
                     selectedItem = selectedItem,
                     items = items,
                     onClick = { item ->
                         navController.navigate(item.route) {
                             navController.graph.startDestinationRoute?.let { startRoute ->
-                                popUpTo(startRoute) {
-                                    saveState = true
-                                }
+                                popUpTo(startRoute) { saveState = true }
                             }
                             launchSingleTop = true
                             restoreState = true
@@ -79,13 +86,16 @@ fun BottomNavigation() {
                     }
                 )
             }
-
         }) { paddingValues ->
 
         NavHost(
             navController = navController,
             startDestination = NavRoute.HomeScreen.route,
             modifier = Modifier,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() },
         ) {
 
             composable(
@@ -151,6 +161,10 @@ fun BottomNavigation() {
             }
             composable(
                 NavRoute.DetailScreen.route, // Use the route directly from NavRoute
+                enterTransition = { slideInHorizontally { it } + fadeIn() },
+                exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+                popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+                popExitTransition = { slideOutHorizontally { it } + fadeOut() },
                 arguments = listOf(navArgument("itemId") {
                     type = NavType.IntType
                 })
@@ -165,6 +179,10 @@ fun BottomNavigation() {
             }
             composable(
                 NavRoute.CategoryScreen.route,
+                enterTransition = { slideInHorizontally { it } + fadeIn() },
+                exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+                popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+                popExitTransition = { slideOutHorizontally { it } + fadeOut() }
             ) {
                 navController.previousBackStackEntry?.savedStateHandle?.get<CategoryModel>("category")
                     ?.let { category ->

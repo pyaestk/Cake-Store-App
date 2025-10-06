@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.shoppingapp.data.model.request.AddToCartRequest
 import com.example.shoppingapp.data.model.response.CartItemResponse
 import com.example.shoppingapp.data.model.response.ItemResponse
-import com.example.shoppingapp.data.util.toModel
-import com.example.shoppingapp.domain.model.CartItemModel
 import com.example.shoppingapp.domain.util.Response
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,7 +42,7 @@ class CartRemoteDataSource(
 
 
 
-    fun loadCartItemWithDetails(): Flow<Response<List<CartItemModel>>> = callbackFlow {
+    fun loadCartItemWithDetails(): Flow<Response<List<CartItemResponse>>> = callbackFlow {
         val userId = "1"
         val firestore = FirebaseFirestore.getInstance()
         val realtimeDb = firebaseDatabase.getReference("Items")
@@ -92,14 +90,11 @@ class CartRemoteDataSource(
                             picUrl = it.picUrl.firstOrNull() ?: ""
                         )
                     }
-                }.map {
-                    it.toModel()
                 }
-                Log.i("cartItems", cartDetails.toString())
+
                 trySend(Response.Success(cartDetails)).isSuccess
 
             }.addOnFailureListener { ex ->
-                Log.i("cartItems", ex.toString())
                 trySend(Response.Error(ex.message ?: "Failed to load item details")).isSuccess
             }
         }

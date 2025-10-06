@@ -40,7 +40,7 @@ fun CategoryItem(
     Column(
         modifier = Modifier.clickable(
             onClick = onItemClick,
-            indication = null, // 🔥 disables ripple
+            indication = null, // disables ripple
             interactionSource = remember { MutableInteractionSource() } // required with no indication
         ),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -81,7 +81,7 @@ fun CategoryList(
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(start = 16.dp ,end = 16.dp, top = 16.dp)
     ) {
         items(categories.size) { index ->

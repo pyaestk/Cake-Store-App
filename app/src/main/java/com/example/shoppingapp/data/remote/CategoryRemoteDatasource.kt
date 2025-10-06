@@ -1,8 +1,6 @@
 package com.example.shoppingapp.data.remote
 
 import com.example.shoppingapp.data.model.response.CategoryResponse
-import com.example.shoppingapp.data.util.toModel
-import com.example.shoppingapp.domain.model.CategoryModel
 import com.example.shoppingapp.domain.util.Response
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -17,15 +15,15 @@ class RemoteDatasource(
 ) {
 
 
-    fun loadCategories(): Flow<Response<List<CategoryModel>>> = callbackFlow {
+    fun loadCategories(): Flow<Response<List<CategoryResponse>>> = callbackFlow {
         val ref = firebaseDatabase.getReference("Category")
         trySend(Response.Loading()).isSuccess
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = ArrayList<CategoryModel>()
+                val list = ArrayList<CategoryResponse>()
                 for (itemSnapShot in snapshot.children) {
                     itemSnapShot.getValue(CategoryResponse::class.java)
-                        ?.let { list.add(it.toModel()) }
+                        ?.let { list.add(it) }
                 }
                 trySend(Response.Success(list)).isSuccess
             }

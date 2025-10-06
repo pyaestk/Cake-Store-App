@@ -4,10 +4,12 @@ import com.example.shoppingapp.data.model.response.BannerResponse
 import com.example.shoppingapp.data.model.response.CartItemResponse
 import com.example.shoppingapp.data.model.response.CategoryResponse
 import com.example.shoppingapp.data.model.response.ItemResponse
+import com.example.shoppingapp.data.model.response.UserResponse
 import com.example.shoppingapp.domain.model.BannerModel
 import com.example.shoppingapp.domain.model.CartItemModel
 import com.example.shoppingapp.domain.model.CategoryModel
 import com.example.shoppingapp.domain.model.ItemModel
+import com.example.shoppingapp.domain.model.UserModel
 
 
 fun BannerResponse.toModel() = BannerModel(
@@ -44,4 +46,11 @@ fun CartItemResponse.toModel() = CartItemModel(
     title = title,
     price = price,
     picUrl = picUrl
+)
+
+fun UserResponse.toModel() = UserModel(
+    id = id,
+    name = name,
+    email = email,
+    password = password
 )

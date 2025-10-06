@@ -2,8 +2,6 @@ package com.example.shoppingapp.data.remote
 
 import android.util.Log
 import com.example.shoppingapp.data.model.response.ItemResponse
-import com.example.shoppingapp.data.util.toModel
-import com.example.shoppingapp.domain.model.ItemModel
 import com.example.shoppingapp.domain.util.Response
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,24 +14,23 @@ import kotlinx.coroutines.flow.callbackFlow
 class ItemRemoteDataSource(
     private val firebaseDatabase: FirebaseDatabase
 ) {
-    fun loadItems(): Flow<Response<List<ItemModel>>> = callbackFlow {
+    fun loadItems(): Flow<Response<List<ItemResponse>>> = callbackFlow {
         val ref = firebaseDatabase.getReference("Items")
         /*.orderByChild("showRecommended")
         .equalTo(true)*/
         trySend(Response.Loading()).isSuccess
+
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = ArrayList<ItemModel>()
+                val list = ArrayList<ItemResponse>()
                 for (itemSnapShot in snapshot.children) {
                     itemSnapShot.getValue(ItemResponse::class.java)
-                        ?.let { list.add(it.toModel()) }
+                        ?.let { list.add(it) }
                 }
-                Log.i("loadItems", list.toString())
                 trySend(Response.Success(list)).isSuccess
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.i("loadItems", error.toString())
                 trySend(Response.Error(message = error.message)).isSuccess
             }
         }
@@ -43,18 +40,18 @@ class ItemRemoteDataSource(
         }
     }
 
-    fun loadItemDetail(itemId: Int): Flow<Response<ItemModel>> = callbackFlow {
+    fun loadItemDetail(itemId: Int): Flow<Response<ItemResponse>> = callbackFlow {
         val ref = firebaseDatabase.getReference("Items")
 
         trySend(Response.Loading()).isSuccess
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                var foundItem: ItemModel? = null
+                var foundItem: ItemResponse? = null
                 for (itemSnapshot in snapshot.children) {
                     val itemResponse = itemSnapshot.getValue(ItemResponse::class.java)
                     if (itemResponse?.id == itemId) {
-                        foundItem = itemResponse.toModel()
+                        foundItem = itemResponse
                         break
                     }
                 }
@@ -80,7 +77,7 @@ class ItemRemoteDataSource(
 
 
 
-    fun loadItemByCategory(categoryId: Int): Flow<Response<List<ItemModel>>> = callbackFlow {
+    fun loadItemByCategory(categoryId: Int): Flow<Response<List<ItemResponse>>> = callbackFlow {
         val query = firebaseDatabase
             .getReference("Items")
             .orderByChild("categoryId")
@@ -90,10 +87,10 @@ class ItemRemoteDataSource(
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = ArrayList<ItemModel>()
+                val list = ArrayList<ItemResponse>()
                 for (itemSnapShot in snapshot.children) {
                     itemSnapShot.getValue(ItemResponse::class.java)?.let {
-                        list.add(it.toModel())
+                        list.add(it)
                     }
                 }
                 Log.i("loadItemByCategory", "Category ID: $categoryId, Items found: ${list.size}")

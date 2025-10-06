@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.shoppingapp.domain.model.BannerModel
-import com.example.shoppingapp.presentation.home.HomeScreenState
 
 
 @Composable
@@ -36,7 +34,7 @@ fun Banner(
     HorizontalPager(
         state = pagerState,
         modifier = Modifier.fillMaxWidth(),
-        pageSpacing = 8.dp,
+        pageSpacing = 16.dp,
         contentPadding = PaddingValues(horizontal = 16.dp)
     ){ index ->
         SliderItem(

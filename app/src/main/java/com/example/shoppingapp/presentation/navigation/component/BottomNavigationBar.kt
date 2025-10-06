@@ -21,7 +21,9 @@ import com.example.shoppingapp.presentation.navigation.BottomNavItems
 
 @Composable
 fun BottomNavigationBar(
-    items: List<BottomNavItems>, onClick: (BottomNavItems) -> Unit, selectedItem: Int
+    items: List<BottomNavItems>,
+    onClick: (BottomNavItems) -> Unit,
+    selectedItem: Int,
 ) {
 
     NavigationBar(

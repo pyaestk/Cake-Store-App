@@ -63,7 +63,7 @@ fun CartScreen(
                 painter = painterResource(
                     R.drawable.ic_delete,
                 ),
-                contentDescription = "Back",
+                contentDescription = null,
                 modifier = Modifier
                     .clickable { }
                     .align(Alignment.TopEnd).padding(end = 6.dp),
@@ -134,7 +134,9 @@ fun CartScreen(
                 PriceInformationSection(state)
 
                 Button(
-                    onClick = {},
+                    onClick = {
+
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)

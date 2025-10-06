@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.detail.component
+package com.example.shoppingapp.presentation.detail
 
 import com.example.shoppingapp.domain.model.ItemModel
 

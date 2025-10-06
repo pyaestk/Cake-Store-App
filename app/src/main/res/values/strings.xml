@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ShoppingApp</string>
+    <string name="web_client_id">522112427009-oivujmv077eja9jbgqthcsto5pd0uo0s.apps.googleusercontent.com</string>
+
+    <string name="the_passwords_doesn_t_match">The passwords doesn\'t match</string>
+    <string name="confirm_password_can_t_be_empty">Confirm Password can\'t be empty</string>
+    <string name="password_must_contain_at_least_1_letter">Password must contain at least 1 letter</string>
+    <string name="password_must_contain_at_least_1_special_character">Password must contain at least 1 special character</string>
+    <string name="password_must_contain_at_least_2_numbers">Password must contain at least 2 numbers</string>
+    <string name="nine_characters_minimum_and_remaining">9 characters minimum including at least 1 letter, 2 digits and 1 special characters</string>
+    <string name="this_password_can_t_be_blank">This password can\'t be blank</string>
+    <string name="the_email_can_t_be_blank">The email can\'t be blank</string>
+    <string name="that_s_not_a_valid_email">That\'s not a valid email</string>
 </resources>

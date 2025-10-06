@@ -1,9 +1,11 @@
 package com.example.shoppingapp.di
 
+import com.example.shoppingapp.data.repository.AuthRepositoryImpl
 import com.example.shoppingapp.data.repository.CartRepositoryImpl
 import com.example.shoppingapp.data.repository.CategoryRepositoryImpl
 import com.example.shoppingapp.data.repository.DetailRepositoryImpl
 import com.example.shoppingapp.data.repository.HomeRepositoryImpl
+import com.example.shoppingapp.domain.repository.AuthRepository
 import com.example.shoppingapp.domain.repository.CartRepository
 import com.example.shoppingapp.domain.repository.CategoryRepository
 import com.example.shoppingapp.domain.repository.DetailRepository
@@ -31,6 +33,11 @@ val RepositoryModule = module {
     single<DetailRepository>{
         DetailRepositoryImpl(
             get(),
+            get()
+        )
+    }
+    single<AuthRepository> {
+        AuthRepositoryImpl(
             get()
         )
     }
