@@ -6,6 +6,7 @@ import com.example.shoppingapp.domain.model.UserModel
 import com.example.shoppingapp.domain.repository.AuthRepository
 import com.example.shoppingapp.domain.util.Response
 import com.example.shoppingapp.domain.util.map
+import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource
@@ -44,7 +45,7 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun isLogin(): Response<Boolean> {
+    override fun isLogin(): Flow<Boolean> {
         return authRemoteDataSource.isLogin()
     }
 }

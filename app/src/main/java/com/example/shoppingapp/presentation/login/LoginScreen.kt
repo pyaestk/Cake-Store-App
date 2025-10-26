@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -40,15 +42,8 @@ fun LoginScreen(
 ) {
     val loginState by loginViewModel.loginFormState.collectAsState()
 
-    LaunchedEffect(loginState.isFormValid) {
-//        loginViewModel.navigationEvent.collectLatest { event ->
-//            when (event) {
-//                is LoginViewModel.LoginNavigationEvent.NavigateToHome -> {
-//                    navigateToHome?.invoke()
-//                }
-//            }
-//        }
-        if (loginState.isFormValid){
+    LaunchedEffect(loginState.navigateToHome) {
+        if (loginState.navigateToHome) {
             navigateToHome?.invoke()
         }
     }
@@ -58,37 +53,71 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
-                .navigationBarsPadding()
-                .statusBarsPadding(),
+                .statusBarsPadding()
+                .navigationBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            LoginFormSection(
-                loginUiState = loginState,
-                onEvent = loginViewModel::onEvent
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Or continue with",
-                style = MaterialTheme.typography.labelLarge.copy(color = Color(0xFF64748B))
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            SocialMediaLogin(
-                modifier = Modifier, icon = R.drawable.google, text = "Google"
+            // Top section
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(top = 48.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                //connect google
+                Text(
+                    text = "WELCOME BACK",
+                    fontSize = 28.sp,
+                    color = colorResource(R.color.midBrown),
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                LoginFormSection(
+                    loginUiState = loginState,
+                    onEvent = loginViewModel::onEvent
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Or continue with",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = Color(0xFF64748B),
+                        fontSize = 14.sp
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                SocialMediaLogin(
+                    modifier = Modifier,
+                    icon = R.drawable.google,
+                    text = "Google"
+                ) {
+                    // connect google
+
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CreateAccountSection(navigateToRegister = navigateToRegister)
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            CreateAccountSection(
-                navigateToRegister = navigateToRegister
-            )
         }
     }
 }
 
+
 @Composable
-private fun ColumnScope.CreateAccountSection(
+fun ColumnScope.CreateAccountSection(
     navigateToRegister: (() -> Unit)? = null
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
@@ -120,6 +149,5 @@ private fun ColumnScope.CreateAccountSection(
         },
         fontSize = 14.sp
     )
-
 }
 

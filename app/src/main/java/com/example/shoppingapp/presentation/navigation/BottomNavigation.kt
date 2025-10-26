@@ -152,10 +152,15 @@ fun BottomNavigation() {
             }
             composable(
                 NavRoute.ProfileScreen.route,
-
                 ) {
                 ProfileScreen(
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    navigateToAppStart = {
+                        navController.navigate(NavRoute.AppStartNavigation.route) {
+                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
                 )
                 showBottomNav.value = true
             }

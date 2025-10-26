@@ -1,6 +1,7 @@
 package com.example.shoppingapp.presentation.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,12 +31,25 @@ import com.example.shoppingapp.R
 import com.example.shoppingapp.presentation.profile.component.OrderInfoBoxes
 import com.example.shoppingapp.presentation.profile.component.SettingItems
 import com.example.shoppingapp.ui.theme.ShoppingAppTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
+    navigateToAppStart: (() -> Unit)? = null,
+    viewModel: ProfileScreenViewModel = koinViewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                ProfileScreenEvent.NavigateToAppStart -> navigateToAppStart?.invoke()
+                else -> Unit
+            }
+        }
+    }
+
 
     Column(
         modifier = modifier
@@ -162,7 +177,8 @@ fun ProfileScreen(
         SettingItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
+                .padding(top = 16.dp)
+                .clickable { viewModel.onEvent(ProfileScreenEvent.Logout) },
             title = "Log Out",
             icon = R.drawable.ic_logout
         )

@@ -18,7 +18,7 @@ fun NavGraph(
         startDestination = startDestination
     ){
         navigation(
-            route = NavRoute.AppStartNavigation.route,
+            route = startDestination,
             startDestination = NavRoute.LoginScreen.route
         ){
             composable(NavRoute.LoginScreen.route){

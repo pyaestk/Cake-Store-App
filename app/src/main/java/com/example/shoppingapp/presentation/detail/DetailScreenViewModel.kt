@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.domain.model.ItemModel
 import com.example.shoppingapp.domain.usecase.detail.DetailScreenUseCase
 import com.example.shoppingapp.domain.util.Response
-import com.example.shoppingapp.presentation.detail.DetailScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -36,12 +35,6 @@ class DetailScreenViewModel(
 
             is DetailScreenEvent.AddRemoveItemToFav -> {
                 viewModelScope.launch {
-                    /*try {
-
-                    } catch () {
-
-                    }*/
-
                     val item = detailScreenUseCase.getFavItemByIDUseCase(event.itemModel.id)
                     if (item != null) {
                         deleteItem(event.itemModel)

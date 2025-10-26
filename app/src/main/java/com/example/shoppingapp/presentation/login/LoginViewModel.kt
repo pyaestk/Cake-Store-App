@@ -19,12 +19,22 @@ class LoginViewModel(
     private val _loginUiState = MutableStateFlow(LoginUiState())
     val loginFormState = _loginUiState.asStateFlow()
 
-//    private val _navigationEvent = MutableSharedFlow<LoginNavigationEvent>()
-//    val navigationEvent: SharedFlow<LoginNavigationEvent> = _navigationEvent.asSharedFlow()
-
-    sealed class LoginNavigationEvent {
-        object NavigateToHome : LoginNavigationEvent()
-    }
+//    init {
+//        checkLoginStatus()
+//    }
+//
+//    private fun checkLoginStatus() {
+//        viewModelScope.launch {
+//            when (authRepository.isLogin()) {
+//                is Response.Success -> {
+//                    _loginUiState.update { it.copy(navigateToHome = true) }
+//                }
+//                else -> {
+//                    // Not logged in, do nothing
+//                }
+//            }
+//        }
+//    }
 
     fun onEvent(event: LoginUiEvent) {
         when (event) {
@@ -64,8 +74,7 @@ class LoginViewModel(
             when (val result = authRepository.loginWithEmail(email, password)) {
                 is Response.Success -> {
                     Log.i("LoginWithEmail", "Success ")
-                    _loginUiState.update { it.copy(isLoading = false, error = null, isFormValid = true) }
-//                    _navigationEvent.emit(LoginNavigationEvent.NavigateToHome)
+                    _loginUiState.update { it.copy(isLoading = false, error = null, navigateToHome = true) }
                 }
                 is Response.Error -> {
                     Log.i("LoginWithEmail", result.message.toString())

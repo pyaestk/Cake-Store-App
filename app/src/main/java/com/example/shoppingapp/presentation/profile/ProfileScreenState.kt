@@ -1,4 +1,6 @@
 package com.example.shoppingapp.presentation.profile
 
-class ProfileScreenState {
-}
+data class ProfileScreenState (
+    val isLoading: Boolean = false,
+    val error: String? = null,
+)

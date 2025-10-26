@@ -7,5 +7,6 @@ data class LoginUiState(
     val passwordError: String? = null,
     val isFormValid: Boolean = false,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val navigateToHome: Boolean = false
 )

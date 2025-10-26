@@ -158,6 +158,7 @@ fun HomeScreen(
                     }
                     Spacer(modifier = Modifier.padding(top = 13.dp))
                     LazyRow(
+                        modifier = Modifier.padding(bottom = 16.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
                         items(
