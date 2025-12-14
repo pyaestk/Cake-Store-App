@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,12 +21,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.CategoryModel
 import com.example.shoppingapp.domain.model.ItemModel
 import com.example.shoppingapp.presentation.home.component.Banner
@@ -56,7 +54,7 @@ fun HomeScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            CircularProgressIndicator(color = colorResource(R.color.darkBrown))
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
     } else {
         LazyColumn(
@@ -82,7 +80,7 @@ fun HomeScreen(
                 if (homeScreenState.categories.isNotEmpty()) {
                     Text(
                         text = "Categories",
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
@@ -107,13 +105,13 @@ fun HomeScreen(
                     ) {
                         Text(
                             text = "Recommended",
-                            color = Color.Black,
+                            color = MaterialTheme.colorScheme.onBackground,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                         )
                         Text(
                             text = "See All",
-                            color = colorResource(R.color.darkBrown),
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                         )
@@ -145,13 +143,13 @@ fun HomeScreen(
                     ) {
                         Text(
                             text = "All items",
-                            color = Color.Black,
+                            color = MaterialTheme.colorScheme.onBackground,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                         )
                         Text(
                             text = "See All",
-                            color = colorResource(R.color.darkBrown),
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                         )

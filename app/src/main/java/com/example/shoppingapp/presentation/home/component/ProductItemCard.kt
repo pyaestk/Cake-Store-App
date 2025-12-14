@@ -1,7 +1,6 @@
 package com.example.shoppingapp.presentation.home.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,13 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.ItemModel
 
 @Composable
@@ -42,7 +38,9 @@ fun ProductItemCard(
 //                shape = RoundedCornerShape(10.dp)
 //            ),
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.LightGray.copy(alpha = 0.4f)),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column {
             AsyncImage(
@@ -51,12 +49,13 @@ fun ProductItemCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(126.dp)
-                    .background(color = Color.White),
+                    .background(color = MaterialTheme.colorScheme.surface),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = item.title,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 fontWeight = FontWeight.Bold,
@@ -65,9 +64,9 @@ fun ProductItemCard(
             )
             Text(
                 text = "$${item.price}",
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 8.dp),
-                color = colorResource(R.color.midBrown),
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))

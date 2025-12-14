@@ -25,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -65,10 +64,10 @@ fun CartItem(
             modifier = Modifier.width(25.dp)
                 .border(
                     width = 1.dp,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.outline,
                     shape = RoundedCornerShape(8.dp)
                 ),
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         )
         /*Checkbox(
             checked = checked,
@@ -101,12 +100,12 @@ fun CartItem(
             Text(
                 text = "$${cartItem.price}",
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = colorResource(R.color.midBrown)
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
                 text = cartItem.size,
-                color = colorResource(R.color.grey),
+                color =  MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
         }
@@ -122,7 +121,7 @@ fun CartItem(
                 Image(
                     painter = painterResource(id = R.drawable.ic_remove),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color.Gray),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 )
             }
 
@@ -137,20 +136,10 @@ fun CartItem(
                     modifier = Modifier
                         .padding(2.dp)
                         .size(28.dp)
-                        .background(
-                            colorResource(R.color.white), shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            onDecrement(cartItem)
-                        }
+                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                        .clickable { onDecrement(cartItem) }
                 ) {
-                    Text(
-                        text = "-",
-                        color = Color.Black,
-                        modifier = Modifier.align(Alignment.Center),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text("-", color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.align(Alignment.Center), fontWeight = FontWeight.Bold)
                 }
 
                 Text(
@@ -163,20 +152,10 @@ fun CartItem(
                     modifier = Modifier
                         .padding(2.dp)
                         .size(28.dp)
-                        .background(
-                            colorResource(R.color.white), shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            onIncrement(cartItem)
-                        }
+                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                        .clickable { onIncrement(cartItem) }
                 ) {
-                    Text(
-                        text = "+",
-                        color = Color.Black,
-                        modifier = Modifier.align(Alignment.Center),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text("+", color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.align(Alignment.Center), fontWeight = FontWeight.Bold)
                 }
 
             }

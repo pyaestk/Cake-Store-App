@@ -10,17 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shoppingapp.R
 
 @Composable
 fun ModelSelector(
@@ -38,16 +36,14 @@ fun ModelSelector(
                     .padding(end = 8.dp)
                     .height(40.dp)
                     .background(
-                        if (index == selectedModelIndex) colorResource(R.color.white) else Color.LightGray.copy(
-                            alpha = 0.4f
-                        ),
+                        if (index == selectedModelIndex) MaterialTheme.colorScheme.surface
+                        else MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .border(
                         width = 2.dp,
-                        color = if (index == selectedModelIndex) colorResource(R.color.midBrown) else Color.LightGray.copy(
-                            alpha = 0.4f
-                        ),
+                        color = if (index == selectedModelIndex) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.outline,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .clickable(
@@ -62,7 +58,8 @@ fun ModelSelector(
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
-                    color = Color.Black,
+                    color = if (index == selectedModelIndex) MaterialTheme.colorScheme.onSurface
+                        else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

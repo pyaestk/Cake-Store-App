@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,14 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.CategoryModel
 
 @Composable
@@ -50,11 +48,13 @@ fun CategoryItem(
                 .size(65.dp)
                 .border(
                     width = 2.dp,
-                    color = if (isSelected) colorResource(R.color.midBrown) else Color.White,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.outline,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .background(
-                    color = if (isSelected) Color.White.copy(alpha = 0.7f) else Color.LightGray.copy(alpha = 0.4f),
+                    color = if (isSelected) MaterialTheme.colorScheme.surface
+                    else MaterialTheme.colorScheme.surfaceVariant,
                     shape = RoundedCornerShape(16.dp),
                 ),
             model = item.picUrl,
@@ -64,7 +64,8 @@ fun CategoryItem(
         Spacer(modifier = Modifier.padding(top = 8.dp))
         Text(
             text = item.title,
-            color = if (isSelected) colorResource(R.color.darkBrown) else colorResource(R.color.midBrown),
+            color = if (isSelected) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold
         )

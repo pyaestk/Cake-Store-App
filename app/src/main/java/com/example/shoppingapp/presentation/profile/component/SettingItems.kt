@@ -10,12 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +36,7 @@ fun SettingItems(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color.LightGray.copy(alpha = 0.4f),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(16.dp),
@@ -44,8 +45,9 @@ fun SettingItems(
             Image(
                 painter = painterResource(icon),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(20.dp)
                     .clip(CircleShape)
             )
 
@@ -59,9 +61,10 @@ fun SettingItems(
 
             Image(
                 painter = painterResource(R.drawable.ic_arrow_forward),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(20.dp)
                     .clip(CircleShape),
             )
 

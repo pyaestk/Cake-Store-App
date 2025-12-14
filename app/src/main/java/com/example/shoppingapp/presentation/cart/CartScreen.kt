@@ -67,7 +67,7 @@ fun CartScreen(
                 modifier = Modifier
                     .clickable { }
                     .align(Alignment.TopEnd).padding(end = 6.dp),
-                colorFilter = ColorFilter.tint(Color.Red)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
             )
             Text(
                 text = "Your Cart",
@@ -145,12 +145,12 @@ fun CartScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent
                     ),
-                    border = BorderStroke(2.dp, colorResource(R.color.midBrown))
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = "Check Out (${state.cartItems.sumOf { it.quantity }})",
                         style = MaterialTheme.typography.titleMedium,
-                        color = colorResource(R.color.black),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
@@ -170,7 +170,7 @@ fun PriceInformationSection(state: CartScreenState) {
     ) {
         Text(
             text = "Item total:",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )
 
@@ -178,7 +178,7 @@ fun PriceInformationSection(state: CartScreenState) {
             text = "${state.cartItems.sumOf { it.quantity }}",
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
-            color = colorResource(R.color.darkBrown),
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp
         )
     }
@@ -189,7 +189,7 @@ fun PriceInformationSection(state: CartScreenState) {
     ) {
         Text(
             text = "Sub total:",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )
 
@@ -197,7 +197,7 @@ fun PriceInformationSection(state: CartScreenState) {
             text = "$${state.totalPrice}",
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
-            color = colorResource(R.color.darkBrown),
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp
         )
     }
@@ -208,7 +208,7 @@ fun PriceInformationSection(state: CartScreenState) {
     ) {
         Text(
             text = "Delivery fee:",
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )
 
@@ -216,7 +216,7 @@ fun PriceInformationSection(state: CartScreenState) {
             text = "$${10.0}",
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
-            color = colorResource(R.color.darkBrown),
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp
         )
     }
@@ -225,7 +225,7 @@ fun PriceInformationSection(state: CartScreenState) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
-            .background(Color.Gray.copy(0.2f))
+            .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
             .height(1.dp)
     )
 
@@ -236,7 +236,7 @@ fun PriceInformationSection(state: CartScreenState) {
         Text(
             text = "Total Price:",
             fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 16.sp
         )
 
@@ -245,7 +245,7 @@ fun PriceInformationSection(state: CartScreenState) {
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.darkBrown),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp
         )
     }

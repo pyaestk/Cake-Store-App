@@ -37,10 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,7 +86,7 @@ fun DetailScreen(
 
     if (state.isLoading) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = colorResource(R.color.darkBrown))
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
         return
     }
@@ -137,13 +135,13 @@ fun DetailScreen(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
-                    color = colorResource(R.color.darkBrown)
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "$${item.price}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    color = colorResource(R.color.midBrown)
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -171,14 +169,14 @@ fun DetailScreen(
                 text = "Description",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = colorResource(R.color.black),
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier.padding(vertical = 4.dp))
             Text(
                 text = item.description,
                 fontSize = 14.sp,
-                color = colorResource(R.color.darkBrown),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
             Spacer(modifier = Modifier.size(16.dp))
@@ -195,11 +193,11 @@ fun DetailScreen(
                         .weight(1f),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.midBrown)
+                        containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(
-                        text = "Buy Now", style = MaterialTheme.typography.titleMedium
+                        text = "Buy Now", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
@@ -226,7 +224,7 @@ fun DetailScreen(
                         painter = painterResource(id = R.drawable.basket),
                         contentDescription = null,
                         modifier = Modifier,
-                        colorFilter = ColorFilter.tint(Color.Gray),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                     )
                 }
             }
@@ -248,11 +246,11 @@ private fun SellerInfoSection(item: ItemModel) {
                 .width(40.dp)
                 .height(40.dp)
                 .background(
-                    color = colorResource(R.color.lightGrey), shape = RoundedCornerShape(10.dp)
+                    color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(10.dp)
                 )
                 .border(
                     width = 1.dp,
-                    color = colorResource(R.color.brown),
+                    color = MaterialTheme.colorScheme.outline,
                     shape = RoundedCornerShape(10.dp)
                 )
         )
@@ -278,23 +276,13 @@ private fun SellerInfoSection(item: ItemModel) {
             )*/
             Button(
                 onClick = {},
-                modifier = Modifier,
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.white).copy(0.8f),
-                ),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = colorResource(R.color.darkBrown)
-                )
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
             ) {
-                Text(
-                    text = "View Profile",
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.Black
-                )
+                Text("View Profile", color = MaterialTheme.colorScheme.onBackground)
             }
+
         }
     }
 }
