@@ -19,11 +19,7 @@ fun RatingBarRow(rating: Double){
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(top = 16.dp).padding(horizontal = 16.dp)
     ){
-        Text(
-            text = "Select Weights",
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f)
-        )
+
         Image(
             painter = painterResource(R.drawable.star),
             contentDescription = null,

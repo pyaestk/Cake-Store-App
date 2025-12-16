@@ -27,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -45,6 +44,7 @@ fun CartScreen(
     paddingValues: PaddingValues,
     viewModel: CartScreenViewModel = koinViewModel(),
     onItemClick: (CartItemModel) -> Unit,
+    navigateToPayment: () -> Unit
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -135,7 +135,7 @@ fun CartScreen(
 
                 Button(
                     onClick = {
-
+                        navigateToPayment.invoke()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -143,7 +143,8 @@ fun CartScreen(
                         .height(48.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent
+                        containerColor = MaterialTheme.colorScheme.background,
+
                     ),
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
                 ) {
@@ -207,7 +208,7 @@ fun PriceInformationSection(state: CartScreenState) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Delivery fee:",
+            text = "Tax:",
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )

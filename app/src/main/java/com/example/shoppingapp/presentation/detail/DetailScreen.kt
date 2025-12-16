@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,6 +48,7 @@ import coil.compose.AsyncImage
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.ItemModel
 import com.example.shoppingapp.presentation.detail.component.HeaderSection
+import com.example.shoppingapp.presentation.detail.component.ImageThumbnail
 import com.example.shoppingapp.presentation.detail.component.ModelSelector
 import com.example.shoppingapp.presentation.detail.component.RatingBarRow
 import org.koin.androidx.compose.koinViewModel
@@ -119,9 +122,30 @@ fun DetailScreen(
 
 
         //info section
-        Column(
-            modifier = Modifier.padding(vertical = 8.dp)
-        ) {
+        Column{
+
+            LazyRow(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.1f),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+            ) {
+                items(item.picUrl) { imageUrl ->
+                    ImageThumbnail(
+                        imageUrl = imageUrl,
+                        isSelected = selectedImageUrl == imageUrl,
+                        onClick = {
+                            selectedImageUrl = imageUrl
+                        }
+                    )
+
+                }
+
+            }
+            Spacer(modifier.padding(vertical = 8.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -145,25 +169,18 @@ fun DetailScreen(
                 )
             }
 
+            RatingBarRow(
+                rating = item.rating
+            )
+
             Spacer(modifier.padding(vertical = 16.dp))
 
             SellerInfoSection(
                 item
             )
 
-            Spacer(modifier.padding(vertical = 8.dp))
-
-            RatingBarRow(
-                rating = item.rating
-            )
 
             Spacer(modifier.padding(vertical = 8.dp))
-
-            ModelSelector(
-                models = item.size, selectedModelIndex = selectedModelIndex, onModelSelected = {
-                    selectedModelIndex = it
-                })
-            Spacer(modifier.padding(vertical = 16.dp))
 
             Text(
                 text = "Description",
@@ -179,7 +196,13 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier.padding(vertical = 8.dp))
+
+            ModelSelector(
+                models = item.size, selectedModelIndex = selectedModelIndex, onModelSelected = {
+                    selectedModelIndex = it
+                })
+            Spacer(modifier = Modifier.size(24.dp))
             Row(
                 modifier = Modifier
                     .fillMaxSize()

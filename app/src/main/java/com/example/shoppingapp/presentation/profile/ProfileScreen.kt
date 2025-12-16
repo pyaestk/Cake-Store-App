@@ -38,6 +38,7 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     navigateToAppStart: (() -> Unit)? = null,
+    navigateToAddress: (() -> Unit)? = null,
     viewModel: ProfileScreenViewModel = koinViewModel()
 ) {
 
@@ -96,14 +97,14 @@ fun ProfileScreen(
                     .padding(start = 16.dp)
             ) {
                 Text(
-                    text = "John Doe",
+                    text = "Dylan",
                     modifier = Modifier,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = "kasjdfkasdkf@gmail.com",
+                    text = "dylanseven@gmail.com",
                     modifier = Modifier.padding(top = 5.dp),
                     style = MaterialTheme.typography.titleSmall,
                     color = Color.Gray
@@ -132,7 +133,7 @@ fun ProfileScreen(
 
             OrderInfoBoxes(
                 count = 3,
-                title = "Cancel Orders",
+                title = "Favorite Items",
                 modifier = Modifier.weight(1f),
             )
         }
@@ -146,13 +147,13 @@ fun ProfileScreen(
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
-        SettingItems(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
-            title = "Edit Profile",
-            icon = R.drawable.ic_edit
-        )
+//        SettingItems(
+//            modifier = Modifier
+//                .padding(horizontal = 16.dp)
+//                .padding(top = 16.dp),
+//            title = "Edit Profile",
+//            icon = R.drawable.ic_edit
+//        )
         SettingItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -163,17 +164,20 @@ fun ProfileScreen(
         SettingItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
+                .padding(top = 16.dp)
+                .clickable {
+                    navigateToAddress?.invoke()
+                },
             title = "Shipping Address",
             icon = R.drawable.ic_location
         )
-        SettingItems(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
-            title = "Change Password",
-            icon = R.drawable.ic_password
-        )
+//        SettingItems(
+//            modifier = Modifier
+//                .padding(horizontal = 16.dp)
+//                .padding(top = 16.dp),
+//            title = "Change Password",
+//            icon = R.drawable.ic_password
+//        )
         SettingItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)

@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.home.component
+package com.example.shoppingapp.presentation.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth

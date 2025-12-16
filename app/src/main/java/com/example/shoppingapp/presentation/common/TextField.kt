@@ -16,13 +16,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shoppingapp.R
 
 @Composable
 fun TextField(
@@ -65,13 +63,18 @@ fun TextField(
             }
         },
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = Color.Transparent,
             focusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = colorResource(R.color.midBrown),
-            unfocusedIndicatorColor = colorResource(R.color.midBrown),
-            focusedLabelColor = colorResource(R.color.midBrown),
-            unfocusedLabelColor = colorResource(R.color.midBrown)
-        ),
+            unfocusedContainerColor = Color.Transparent,
+
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
+
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+
+            cursorColor = MaterialTheme.colorScheme.primary
+        )
+        ,
         visualTransformation = if (!showPassword && isPw) {
             PasswordVisualTransformation()
         } else {

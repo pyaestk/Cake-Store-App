@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.shoppingapp.domain.model.CategoryModel
 import com.example.shoppingapp.domain.model.ItemModel
+import com.example.shoppingapp.presentation.common.SearchBar
 import com.example.shoppingapp.presentation.home.component.Banner
 import com.example.shoppingapp.presentation.home.component.CategoryList
 import com.example.shoppingapp.presentation.home.component.ProductItemCard
 import com.example.shoppingapp.presentation.home.component.ProfileHeader
-import com.example.shoppingapp.presentation.home.component.SearchBar
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

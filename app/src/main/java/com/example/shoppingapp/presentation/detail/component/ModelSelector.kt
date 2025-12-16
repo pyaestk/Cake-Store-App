@@ -4,7 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,44 +29,55 @@ fun ModelSelector(
     selectedModelIndex: Int,
     onModelSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier,
-        contentPadding = PaddingValues(start = 16.dp, end = 8.dp)
-    ) {
-        itemsIndexed(models) { index, model ->
-            Box(
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .height(40.dp)
-                    .background(
-                        if (index == selectedModelIndex) MaterialTheme.colorScheme.surface
-                        else MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .border(
-                        width = 2.dp,
-                        color = if (index == selectedModelIndex) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.outline,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clickable(
-                        onClick = {
-                            onModelSelected(index)
-                        }
-                    )
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = model,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                    color = if (index == selectedModelIndex) MaterialTheme.colorScheme.onSurface
+    Column{
+        Text(
+            text = "Select Weights",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        LazyRow(
+            modifier = Modifier,
+            contentPadding = PaddingValues(start = 16.dp, end = 8.dp)
+        ) {
+            itemsIndexed(models) { index, model ->
+                Box(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .height(40.dp)
+                        .background(
+                            if (index == selectedModelIndex) MaterialTheme.colorScheme.surface
+                            else MaterialTheme.colorScheme.surfaceVariant,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .border(
+                            width = 2.dp,
+                            color = if (index == selectedModelIndex) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.outline,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clickable(
+                            onClick = {
+                                onModelSelected(index)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = model,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = if (index == selectedModelIndex) MaterialTheme.colorScheme.onSurface
                         else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
         }
     }
+
 
 }

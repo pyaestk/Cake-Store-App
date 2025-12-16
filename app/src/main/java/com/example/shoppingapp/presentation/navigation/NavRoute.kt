@@ -19,4 +19,8 @@ sealed class NavRoute(
         fun createRoute(itemId: Int) = "detail/${itemId}"
     }
     object CategoryScreen: NavRoute("category")
+
+    object AddressScreen: NavRoute("address")
+
+    object PaymentScreen: NavRoute("payment")
 }

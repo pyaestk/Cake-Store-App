@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,31 +105,31 @@ fun HeaderSection(
             )
         }
 
-        LazyRow(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .background(
-                    color = colorResource(R.color.white).copy(alpha = 0.6f),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .constrainAs(thumbnail) {
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            items(imageUrls) { imageUrl ->
-                ImageThumbnail(
-                    imageUrl = imageUrl,
-                    isSelected = selectedImageUrl == imageUrl,
-                    onClick = {
-                        onImageSelected(imageUrl)
-                    }
-                )
-
-            }
-
-        }
+//        LazyRow(
+//            modifier = Modifier
+//                .padding(vertical = 16.dp)
+//                .background(
+//                    color = colorResource(R.color.white).copy(alpha = 0.6f),
+//                    shape = RoundedCornerShape(10.dp)
+//                )
+//                .constrainAs(thumbnail) {
+//                    bottom.linkTo(parent.bottom)
+//                    end.linkTo(parent.end)
+//                    start.linkTo(parent.start)
+//                }
+//        ) {
+//            items(imageUrls) { imageUrl ->
+//                ImageThumbnail(
+//                    imageUrl = imageUrl,
+//                    isSelected = selectedImageUrl == imageUrl,
+//                    onClick = {
+//                        onImageSelected(imageUrl)
+//                    }
+//                )
+//
+//            }
+//
+//        }
 
     }
 

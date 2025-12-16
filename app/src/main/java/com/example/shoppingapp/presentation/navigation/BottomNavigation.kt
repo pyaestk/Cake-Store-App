@@ -23,12 +23,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.CategoryModel
+import com.example.shoppingapp.presentation.address.AddressScreen
 import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.category.CategoryScreen
 import com.example.shoppingapp.presentation.detail.DetailScreen
 import com.example.shoppingapp.presentation.fav.FavScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.navigation.component.BottomNavigationBar
+import com.example.shoppingapp.presentation.payment.component.PaymentScreen
+import com.example.shoppingapp.presentation.payment.mockPaymentUiState
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 
 @Composable
@@ -128,6 +131,9 @@ fun BottomNavigation() {
                             navController = navController,
                             itemId = item.itemId,
                         )
+                    },
+                    navigateToPayment = {
+                        navController.navigate(NavRoute.PaymentScreen.route)
                     }
                 )
                 showBottomNav.value = true
@@ -160,6 +166,9 @@ fun BottomNavigation() {
                             popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
                             launchSingleTop = true
                         }
+                    },
+                    navigateToAddress = {
+                        navController.navigate(NavRoute.AddressScreen.route)
                     }
                 )
                 showBottomNav.value = true
@@ -205,6 +214,40 @@ fun BottomNavigation() {
 
                         )
                     }
+                showBottomNav.value = false
+            }
+            composable(
+                NavRoute.AddressScreen.route,
+                enterTransition = { slideInHorizontally { it } + fadeIn() },
+                exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+                popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+                popExitTransition = { slideOutHorizontally { it } + fadeOut() }
+            ) {
+                AddressScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+                showBottomNav.value = false
+            }
+            composable(
+                NavRoute.PaymentScreen.route,
+                enterTransition = { slideInHorizontally { it } + fadeIn() },
+                exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+                popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+                popExitTransition = { slideOutHorizontally { it } + fadeOut() }
+            ) {
+                PaymentScreen(
+                    state = mockPaymentUiState,
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
+                    onEditAddress = {},
+                    onEditContact = {},
+                    onShippingChange = {},
+                    onPaymentMethodChange= {},
+                    onPayClick = {}
+                )
                 showBottomNav.value = false
             }
         }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShoppingApp</string>
+    <string name="app_name">Cake Store</string>
     <string name="web_client_id">522112427009-oivujmv077eja9jbgqthcsto5pd0uo0s.apps.googleusercontent.com</string>
 
     <string name="the_passwords_doesn_t_match">The passwords doesn\'t match</string>
