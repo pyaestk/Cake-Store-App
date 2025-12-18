@@ -18,14 +18,16 @@ fun PayButton(
     total: Double,
     onPayClick: () -> Unit
 ) {
+
+
     Button(
-        onClick = onPayClick,
+        onClick = onPayClick ,
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding()
             .height(52.dp),
         shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
     ) {
         Text(
             text = "Pay $" + "%.2f".format(total),

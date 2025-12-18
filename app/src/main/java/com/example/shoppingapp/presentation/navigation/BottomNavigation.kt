@@ -31,7 +31,6 @@ import com.example.shoppingapp.presentation.fav.FavScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.navigation.component.BottomNavigationBar
 import com.example.shoppingapp.presentation.payment.component.PaymentScreen
-import com.example.shoppingapp.presentation.payment.mockPaymentUiState
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 
 @Composable
@@ -238,15 +237,22 @@ fun BottomNavigation() {
                 popExitTransition = { slideOutHorizontally { it } + fadeOut() }
             ) {
                 PaymentScreen(
-                    state = mockPaymentUiState,
                     onBackClick = {
                         navController.navigateUp()
                     },
-                    onEditAddress = {},
+                    onEditAddress = {
+                        navController.navigate(NavRoute.AddressScreen.route)
+                    },
                     onEditContact = {},
-                    onShippingChange = {},
-                    onPaymentMethodChange= {},
-                    onPayClick = {}
+                    onPayClick = { orderId ->
+//                        navController.navigate("payment_success/$orderId") {
+//                            popUpTo("payment") { inclusive = true }
+//                        }
+                        navController.navigate(NavRoute.CartScreen.route) {
+                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
                 )
                 showBottomNav.value = false
             }

@@ -5,6 +5,7 @@ import com.example.shoppingapp.data.model.request.AddToCartRequest
 import com.example.shoppingapp.data.model.response.CartItemResponse
 import com.example.shoppingapp.data.model.response.ItemResponse
 import com.example.shoppingapp.domain.util.Response
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
@@ -13,12 +14,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class CartRemoteDataSource(
-    private val firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase,
+    private val firebaseFirestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
 ) {
     suspend fun addItemToCart(id: Int, quantity: Int, size: String): Response<Unit> {
-        val userId = "1"
+
         return try {
-            FirebaseFirestore.getInstance()
+            val userId = auth.currentUser?.uid.toString()
+            firebaseFirestore
                 .collection("User")
                 .document(userId)
                 .collection("CartItem")
@@ -43,14 +47,13 @@ class CartRemoteDataSource(
 
 
     fun loadCartItemWithDetails(): Flow<Response<List<CartItemResponse>>> = callbackFlow {
-        val userId = "1"
-        val firestore = FirebaseFirestore.getInstance()
+        val userId = auth.currentUser?.uid.toString()
         val realtimeDb = firebaseDatabase.getReference("Items")
 
         trySend(Response.Loading()).isSuccess
 
         // First: listen to cart items from Firestore
-        val cartRef = firestore
+        val cartRef = firebaseFirestore
             .collection("User")
             .document(userId)
             .collection("CartItem")
@@ -105,15 +108,15 @@ class CartRemoteDataSource(
     }
 
     suspend fun incrementCartItemQuantity(itemId: Int): Response<Unit> {
-        val userId = "1"
-        val firestore = FirebaseFirestore.getInstance()
-        val cartItemRef = firestore
-            .collection("User")
-            .document(userId)
-            .collection("CartItem")
-            .document(itemId.toString())
 
         return try {
+            val userId = auth.currentUser?.uid.toString()
+            val firestore = firebaseFirestore
+            val cartItemRef = firestore
+                .collection("User")
+                .document(userId)
+                .collection("CartItem")
+                .document(itemId.toString())
             // Get the current quantity
             val snapshot = cartItemRef.get().await()
             val currentItem = snapshot.toObject(AddToCartRequest::class.java)
@@ -134,15 +137,14 @@ class CartRemoteDataSource(
     }
 
     suspend fun decrementCartItemQuantity(itemId: Int): Response<Unit> {
-        val userId = "1"
-        val firestore = FirebaseFirestore.getInstance()
-        val cartItemRef = firestore
-            .collection("User")
-            .document(userId)
-            .collection("CartItem")
-            .document(itemId.toString())
-
         return try {
+            val userId = auth.currentUser?.uid.toString()
+            val firestore = firebaseFirestore
+            val cartItemRef = firestore
+                .collection("User")
+                .document(userId)
+                .collection("CartItem")
+                .document(itemId.toString())
             // Get the current quantity
             val snapshot = cartItemRef.get().await()
             val currentItem = snapshot.toObject(AddToCartRequest::class.java)
@@ -163,15 +165,15 @@ class CartRemoteDataSource(
     }
 
     suspend fun deleteCartItem(itemId: Int): Response<Unit> {
-        val userId = "1"
-        val firestore = FirebaseFirestore.getInstance()
-        val cartItemRef = firestore
-            .collection("User")
-            .document(userId)
-            .collection("CartItem")
-            .document(itemId.toString())
-
         return try {
+            val userId = auth.currentUser?.uid.toString()
+            val firestore = firebaseFirestore
+            val cartItemRef = firestore
+                .collection("User")
+                .document(userId)
+                .collection("CartItem")
+                .document(itemId.toString())
+
             cartItemRef.delete().await()
             Response.Success(Unit)
         } catch (e: Exception) {

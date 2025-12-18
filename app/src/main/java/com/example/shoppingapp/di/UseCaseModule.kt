@@ -1,5 +1,8 @@
 package com.example.shoppingapp.di
 
+import com.example.shoppingapp.domain.usecase.address.AddressScreenUseCase
+import com.example.shoppingapp.domain.usecase.address.GetShippingAddressUseCase
+import com.example.shoppingapp.domain.usecase.address.SaveShippingAddressUseCase
 import com.example.shoppingapp.domain.usecase.cart.CartScreenUseCase
 import com.example.shoppingapp.domain.usecase.cart.DecreaseCartItemQtyUseCase
 import com.example.shoppingapp.domain.usecase.cart.GetCartItemUseCase
@@ -18,6 +21,11 @@ import com.example.shoppingapp.domain.usecase.home.GetBannersUseCase
 import com.example.shoppingapp.domain.usecase.home.GetCategoryUseCase
 import com.example.shoppingapp.domain.usecase.home.GetItemsUseCase
 import com.example.shoppingapp.domain.usecase.home.HomeUseCases
+import com.example.shoppingapp.domain.usecase.payment.GetPaymentSummaryUseCase
+import com.example.shoppingapp.domain.usecase.payment.PayUseCase
+import com.example.shoppingapp.domain.usecase.payment.PaymentUseCase
+import com.example.shoppingapp.domain.usecase.payment.SetPaymentMethodUseCase
+import com.example.shoppingapp.domain.usecase.payment.SetShippingOptionUseCase
 import org.koin.dsl.module
 
 val UseCaseModule = module {
@@ -123,6 +131,49 @@ val UseCaseModule = module {
     factory {
         FavScreenUseCase(
             getFavItemsUseCase = get()
+        )
+    }
+
+
+    factory {
+        GetShippingAddressUseCase(
+            get()
+        )
+    }
+    factory {
+        SaveShippingAddressUseCase(
+            get()
+        )
+    }
+    factory {
+        AddressScreenUseCase(
+            getShippingAddressUseCase = get(),
+            saveShippingAddressUseCase = get()
+        )
+    }
+    factory{
+        GetPaymentSummaryUseCase(
+            get()
+        )
+    }
+    factory {
+        SetShippingOptionUseCase(
+            get()
+        )
+    }
+    factory {
+        SetPaymentMethodUseCase(
+            get()
+        )
+    }
+    factory {
+        PayUseCase(
+            get()
+        )
+    }
+    factory {
+        PaymentUseCase(
+            get(),get(),get(),get()
         )
     }
 

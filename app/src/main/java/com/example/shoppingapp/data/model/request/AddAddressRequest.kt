@@ -1,10 +1,9 @@
-package com.example.shoppingapp.presentation.address
+package com.example.shoppingapp.data.model.request
 
-data class AddressState (
+data class AddAddressRequest (
     val name: String = "",
     val addressNum: String = "",
     val city: String = "",
-    val street: String = "",
     val country: String = "",
     val zipCode: String = "",
     val phoneNumber: String = "",

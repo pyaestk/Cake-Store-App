@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shoppingapp.presentation.address.AddressEvent
-import com.example.shoppingapp.presentation.address.AddressState
+import com.example.shoppingapp.presentation.address.AddressUiEvent
+import com.example.shoppingapp.presentation.address.AddressUiState
 import com.example.shoppingapp.presentation.common.TextField
 
 @Composable
 fun AddressFormSection(
-    state: AddressState,
-    onEvent: (AddressEvent) -> Unit,
-    modifier: Modifier = Modifier
+    state: AddressUiState,
+    onEvent: (AddressUiEvent) -> Unit,
 ) {
+
     TextField(
         label = "Name",
         trailing = "",
@@ -30,7 +30,7 @@ fun AddressFormSection(
         value = state.name,
         isPw = false,
         onValueChange = {
-
+            onEvent(AddressUiEvent.NameChanged(it))
         }
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -41,7 +41,7 @@ fun AddressFormSection(
         value = state.addressNum,
         isPw = false,
         onValueChange = {
-
+            onEvent(AddressUiEvent.AddressChanged(it))
         }
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -52,7 +52,7 @@ fun AddressFormSection(
         value = state.city,
         isPw = false,
         onValueChange = {
-
+            onEvent(AddressUiEvent.CityChanged(it))
         }
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -63,7 +63,18 @@ fun AddressFormSection(
         value = state.zipCode,
         isPw = false,
         onValueChange = {
-
+            onEvent(AddressUiEvent.PostCodeChanged(it))
+        }
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        label = "Country",
+        trailing = "",
+        modifier = Modifier.fillMaxWidth(),
+        value = state.country,
+        isPw = false,
+        onValueChange = {
+            onEvent(AddressUiEvent.CountryChanged(it))
         }
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -74,7 +85,7 @@ fun AddressFormSection(
         value = state.phoneNumber,
         isPw = false,
         onValueChange = {
-
+            onEvent(AddressUiEvent.PhoneNumChanged(it))
         }
     )
     Spacer(modifier = Modifier.height(32.dp))
@@ -88,7 +99,7 @@ fun AddressFormSection(
         ),
         shape = RoundedCornerShape(size = 10.dp),
         onClick = {
-
+            onEvent(AddressUiEvent.Submit)
         }
     ) {
         Text(

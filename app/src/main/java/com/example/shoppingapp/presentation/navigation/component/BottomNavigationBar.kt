@@ -2,6 +2,8 @@ package com.example.shoppingapp.presentation.navigation.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +25,7 @@ fun BottomNavigationBar(
     selectedItem: Int,
 ) {
     NavigationBar(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().height(80.dp),
         containerColor = MaterialTheme.colorScheme.primary,
         tonalElevation = 10.dp,
     ) {
@@ -31,6 +33,7 @@ fun BottomNavigationBar(
 
         items.forEachIndexed { index, item ->
             NavigationBarItem(
+                modifier = Modifier.padding(top = 10.dp),
                 selected = selectedItem == index,
                 onClick = { onClick(item) },
                 alwaysShowLabel = true,
@@ -39,7 +42,7 @@ fun BottomNavigationBar(
                     androidx.compose.material3.Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                 },
 

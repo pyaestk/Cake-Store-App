@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -58,6 +60,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     itemId: Int,
     onBackClick: () -> Unit,
+    navigateToPayment: (() -> Unit)? = null ,
     detailViewModel: DetailScreenViewModel = koinViewModel(),
 ) {
     val state by detailViewModel.state.collectAsState()
@@ -65,6 +68,8 @@ fun DetailScreen(
     LaunchedEffect(itemId) {
         detailViewModel.getItemDetail(itemId)
     }
+
+    val context = LocalContext.current
 
     val item = state.itemModel
     if (item == null) {
@@ -226,6 +231,13 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.size(16.dp))
                 IconButton(
                     onClick = {
+                        Toast
+                            .makeText(
+                                context,
+                                "Item added to cart",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
                         detailViewModel.onEvent(
                             event = DetailScreenEvent.AddItemToCart(
                                 id = item.id,

@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -53,7 +54,8 @@ fun CartScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(top = 16.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Box(
             modifier = Modifier
@@ -67,7 +69,7 @@ fun CartScreen(
                 modifier = Modifier
                     .clickable { }
                     .align(Alignment.TopEnd).padding(end = 6.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                colorFilter = ColorFilter.tint(Color.Red)
             )
             Text(
                 text = "Your Cart",
@@ -77,7 +79,7 @@ fun CartScreen(
             )
         }
 
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         if (state.isLoading) {
             Box(
@@ -203,24 +205,24 @@ fun PriceInformationSection(state: CartScreenState) {
         )
     }
 
-    Row(
-        modifier = Modifier,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "Tax:",
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 14.sp
-        )
-
-        Text(
-            text = "$${10.0}",
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.End,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 14.sp
-        )
-    }
+//    Row(
+//        modifier = Modifier,
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        Text(
+//            text = "Tax:",
+//            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//            fontSize = 14.sp
+//        )
+//
+//        Text(
+//            text = "$${10.0}",
+//            modifier = Modifier.weight(1f),
+//            textAlign = TextAlign.End,
+//            color = MaterialTheme.colorScheme.onSurface,
+//            fontSize = 14.sp
+//        )
+//    }
 
     Spacer(
         modifier = Modifier
@@ -242,7 +244,7 @@ fun PriceInformationSection(state: CartScreenState) {
         )
 
         Text(
-            text = "$${calculateTotalPrice(state.totalPrice)}",
+            text = "$${state.totalPrice}",
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
@@ -253,7 +255,7 @@ fun PriceInformationSection(state: CartScreenState) {
 
 }
 
-fun calculateTotalPrice(subTotal: Double): Double {
-    val deliveryFee = 10.0
-    return subTotal + deliveryFee
-}
+//fun calculateTotalPrice(subTotal: Double): Double {
+//    val deliveryFee = 10.0
+//    return subTotal + deliveryFee
+//}

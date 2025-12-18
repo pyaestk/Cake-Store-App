@@ -94,44 +94,44 @@ fun HomeScreen(
                     )
                 }
             }
-            item {
-                if (homeScreenState.items.isNotEmpty()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 24.dp)
-                            .padding(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "Recommended",
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        Text(
-                            text = "See All",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                    Spacer(modifier = Modifier.padding(top = 13.dp))
-                    LazyRow(
-                        contentPadding = PaddingValues(horizontal = 8.dp)
-                    ) {
-                        items(
-                            count = homeScreenState.items.size,
-                        ) { index ->
-                            ProductItemCard(
-                                item = homeScreenState.items[index],
-                                onClick = navigateToDetail
-                            )
-                        }
-                    }
-
-                }
-            }
+//            item {
+//                if (homeScreenState.items.isNotEmpty()) {
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 24.dp)
+//                            .padding(horizontal = 16.dp),
+//                        horizontalArrangement = Arrangement.SpaceBetween
+//                    ) {
+//                        Text(
+//                            text = "Recommended",
+//                            color = MaterialTheme.colorScheme.onBackground,
+//                            fontSize = 16.sp,
+//                            fontWeight = FontWeight.SemiBold,
+//                        )
+//                        Text(
+//                            text = "See All",
+//                            color = MaterialTheme.colorScheme.primary,
+//                            fontSize = 14.sp,
+//                            fontWeight = FontWeight.SemiBold,
+//                        )
+//                    }
+//                    Spacer(modifier = Modifier.padding(top = 13.dp))
+//                    LazyRow(
+//                        contentPadding = PaddingValues(horizontal = 8.dp)
+//                    ) {
+//                        items(
+//                            count = homeScreenState.items.size,
+//                        ) { index ->
+//                            ProductItemCard(
+//                                item = homeScreenState.items[index],
+//                                onClick = navigateToDetail
+//                            )
+//                        }
+//                    }
+//
+//                }
+//            }
             item {
                 if (homeScreenState.items.isNotEmpty()) {
                     Row(
