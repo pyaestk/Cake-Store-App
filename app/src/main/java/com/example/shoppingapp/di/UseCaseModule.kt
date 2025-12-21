@@ -173,7 +173,7 @@ val UseCaseModule = module {
     }
     factory {
         PaymentUseCase(
-            get(),get(),get(),get()
+            get(),get(),get(),get(), get()
         )
     }
 

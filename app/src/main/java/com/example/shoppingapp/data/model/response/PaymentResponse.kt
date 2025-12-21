@@ -11,7 +11,6 @@ data class PaymentItemResponse(
 )
 
 data class PaymentSummaryResponse(
-    val shippingAddress: String,
     val items: List<PaymentItemResponse>,
     val selectedShipping: ShippingOption,
     val selectedPaymentMethod: PaymentMethod,

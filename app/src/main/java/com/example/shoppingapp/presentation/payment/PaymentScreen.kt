@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.shoppingapp.R
@@ -49,6 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PaymentScreen(
+    navController: NavController,
     onBackClick: () -> Unit,
     onEditAddress: () -> Unit,
     onEditContact: () -> Unit,
@@ -75,6 +77,21 @@ fun PaymentScreen(
         onPayClick(orderId)
 
         viewModel.onEvent(PaymentUiEvent.OrderSuccess)
+    }
+
+    val addressUpdated =
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getStateFlow("address_updated", false)
+            ?.collectAsState()
+
+    LaunchedEffect(addressUpdated?.value) {
+        if (addressUpdated?.value == true) {
+            viewModel.loadAddress()
+            navController.currentBackStackEntry
+                ?.savedStateHandle
+                ?.set("address_updated", false)
+        }
     }
 
 
@@ -190,6 +207,7 @@ fun PaymentScreen(
 
 
 }
+
 
 @Composable
 private fun SmallCountPill(count: Int) {

@@ -82,7 +82,6 @@ fun PaymentItemResponse.toModel() = PaymentItemModel(
 )
 
 fun PaymentSummaryResponse.toModel() = PaymentSummaryModel (
-    shippingAddress = shippingAddress,
     items = items.map { it.toModel() },
     selectedShipping = selectedShipping,
     selectedPaymentMethod = selectedPaymentMethod,

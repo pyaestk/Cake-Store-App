@@ -13,7 +13,6 @@ data class PaymentItemModel(
 )
 
 data class PaymentSummaryModel(
-    val shippingAddress: String,
     val items: List<PaymentItemModel>,
     val selectedShipping: ShippingOption,
     val selectedPaymentMethod: PaymentMethod,

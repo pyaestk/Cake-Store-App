@@ -3,7 +3,6 @@ package com.example.shoppingapp.data.remote
 import PayResultResponse
 import PaymentItemResponse
 import PaymentSummaryResponse
-import com.example.shoppingapp.data.model.request.AddAddressRequest
 import com.example.shoppingapp.data.model.request.AddToCartRequest
 import com.example.shoppingapp.data.model.response.ItemResponse
 import com.example.shoppingapp.domain.model.PaymentMethod
@@ -32,20 +31,13 @@ class PaymentRemoteDataSource(
             .collection("Checkout")
             .document("current")
 
+
     suspend fun getPaymentSummary(): Response<PaymentSummaryResponse> {
 
         return try {
             val userId = auth.currentUser?.uid.toString()
-            // 1) Address
-            val addressSnap = addressDoc(userId).get().await()
-            if (!addressSnap.exists()) return Response.Success(null)
 
-            val addressDto = addressSnap.toObject(AddAddressRequest::class.java)
-            val shippingAddress = addressDto?.let {
-                "${it.name}\n${it.addressNum}, ${it.city}, ${it.country}\n${it.zipCode}\n${it.phoneNumber}"
-            } ?: ""
-
-            // 2) Checkout settings (shipping option + payment method)
+            // Checkout settings (shipping option + payment method)
             val checkoutRef = checkoutDoc(userId)
             val checkoutSnap = checkoutRef.get().await()
 
@@ -59,7 +51,7 @@ class PaymentRemoteDataSource(
                 else -> PaymentMethod.Card
             }
 
-            // 3) Items (Option A: CartItem + join Realtime DB Items)
+            // Items (Option A: CartItem + join Realtime DB Items)
             val cartSnap = firestore.collection("User")
                 .document(userId)
                 .collection("CartItem")
@@ -96,7 +88,6 @@ class PaymentRemoteDataSource(
             val grandTotal = itemsTotal + shippingFee
 
             val paymentSummaryResponse = PaymentSummaryResponse(
-                shippingAddress = shippingAddress,
                 items = items,
                 selectedShipping = selectedShipping,
                 selectedPaymentMethod = selectedPaymentMethod,

@@ -224,6 +224,10 @@ fun BottomNavigation() {
             ) {
                 AddressScreen(
                     navigateBack = {
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("address_updated", true)
+
                         navController.navigateUp()
                     }
                 )
@@ -237,6 +241,7 @@ fun BottomNavigation() {
                 popExitTransition = { slideOutHorizontally { it } + fadeOut() }
             ) {
                 PaymentScreen(
+                    navController = navController,
                     onBackClick = {
                         navController.navigateUp()
                     },

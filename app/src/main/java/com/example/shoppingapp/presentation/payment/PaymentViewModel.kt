@@ -20,6 +20,7 @@ class PaymentViewModel(
 
 
     init {
+        loadAddress()
         load()
     }
 
@@ -30,6 +31,44 @@ class PaymentViewModel(
             PaymentUiEvent.Pay -> pay()
             PaymentUiEvent.ClearError -> _state.update { it.copy(error = null) }
             PaymentUiEvent.OrderSuccess ->  _state.update { it.copy(lastOrderId = null) }
+        }
+    }
+
+    fun loadAddress() {
+        viewModelScope.launch {
+
+            when (val result = useCase.getShippingAddressUseCase()) {
+                is Response.Success -> {
+                    val a = result.data
+                    if (a != null) {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                shippingAddress = "${a.name}\n${a.addressNum}\n${a.city}, ${a.country}\n${a.zipCode}\n${a.phoneNumber}"
+                            )
+                        }
+                    } else {
+                        _state.update { it.copy(isLoading = false) }
+                    }
+                }
+
+                is Response.Error<*> -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message ?: "Failed to load address"
+                        )
+                    }
+                }
+
+                is Response.Loading<*> -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -53,7 +92,6 @@ class PaymentViewModel(
                     it.copy(
                         isLoading = false,
                         items = summary.items,
-                        shippingAddress = summary.shippingAddress,
                         selectedShipping = summary.selectedShipping,
                         selectedPaymentMethod = summary.selectedPaymentMethod,
                         itemsTotal = summary.itemsTotal,
@@ -81,7 +119,6 @@ class PaymentViewModel(
 
     private fun changeShipping(option: ShippingOption) =
         viewModelScope.launch {
-            // optimistic UI update
             _state.update { it.copy(selectedShipping = option) }
 
             when (val res = useCase.setShippingOption(option)) {

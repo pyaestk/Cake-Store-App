@@ -14,10 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +46,7 @@ fun ProfileScreen(
     navigateToAddress: (() -> Unit)? = null,
     viewModel: ProfileScreenViewModel = koinViewModel()
 ) {
+    val openAlertDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -49,6 +55,31 @@ fun ProfileScreen(
                 else -> Unit
             }
         }
+    }
+
+    if (openAlertDialog.value) {
+        AlertDialog(
+            onDismissRequest = { openAlertDialog.value = false },
+            title = { Text("Log out?") },
+            text = { Text("Are you sure you want to log out?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        openAlertDialog.value = false
+                        viewModel.onEvent(ProfileScreenEvent.Logout)
+                    }
+                ) {
+                    Text("Log out")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { openAlertDialog.value = false }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 
 
@@ -182,7 +213,9 @@ fun ProfileScreen(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = 16.dp)
-                .clickable { viewModel.onEvent(ProfileScreenEvent.Logout) },
+                .clickable {
+                    openAlertDialog.value = true
+                },
             title = "Log Out",
             icon = R.drawable.ic_logout
         )

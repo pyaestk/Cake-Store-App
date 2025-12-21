@@ -38,6 +38,7 @@ fun AddressScreen(
     LaunchedEffect(state.isFormValid) {
         if (state.isFormValid) {
             navigateBack?.invoke()
+
         }
     }
 
