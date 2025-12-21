@@ -1,6 +1,6 @@
 package com.example.shoppingapp.presentation.payment.component
 
-import android.widget.Toast
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,6 +32,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +42,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -45,6 +50,9 @@ import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.PaymentItemModel
 import com.example.shoppingapp.presentation.payment.PaymentUiEvent
 import com.example.shoppingapp.presentation.payment.PaymentViewModel
+import com.lottiefiles.dotlottie.core.compose.runtime.DotLottieController
+import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
+import com.lottiefiles.dotlottie.core.util.DotLottieSource
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -54,7 +62,7 @@ fun PaymentScreen(
     onBackClick: () -> Unit,
     onEditAddress: () -> Unit,
     onEditContact: () -> Unit,
-    onPayClick: (String) -> Unit,
+    onPayClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PaymentViewModel = koinViewModel()
 ) {
@@ -63,20 +71,74 @@ fun PaymentScreen(
 
     val context = LocalContext.current
 
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    val dotLottieController = remember { DotLottieController() }
+
     LaunchedEffect(state.lastOrderId) {
         val orderId = state.lastOrderId ?: return@LaunchedEffect
 
-        Toast
-            .makeText(
-                context,
-                "Order placed successfully!",
-                Toast.LENGTH_SHORT
-            )
-            .show()
+//        Toast
+//            .makeText(
+//                context,
+//                "Order placed successfully!",
+//                Toast.LENGTH_SHORT
+//            )
+//            .show()
 
-        onPayClick(orderId)
-
+//        onPayClick(orderId)
+        openAlertDialog.value = true
         viewModel.onEvent(PaymentUiEvent.OrderSuccess)
+    }
+
+    if (openAlertDialog.value) {
+
+        // play ONLY after dialog is shown
+        LaunchedEffect(Unit) {
+            dotLottieController.setLoop(true)
+            dotLottieController.setSpeed(1.5f)
+            dotLottieController.play()
+        }
+
+        Dialog(onDismissRequest = { openAlertDialog.value = false }) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    DotLottieAnimation(
+                        source = DotLottieSource.Url(
+                            "https://lottie.host/31498cbe-9530-47c9-beeb-23c194189fa7/ynjh8PV20P.lottie"
+                        ),
+                        controller = dotLottieController,
+                        autoplay = true,
+                        loop = false,
+                        modifier = Modifier.size(120.dp)
+                    )
+
+                    Text("Order Success")
+
+                    Button(
+                        onClick = {
+                            openAlertDialog.value = false
+                            onPayClick()
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text("OK")
+                    }
+                }
+            }
+        }
     }
 
     val addressUpdated =

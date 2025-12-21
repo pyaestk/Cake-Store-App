@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply false
 
     id("com.google.devtools.ksp") version "2.2.0-2.0.2" apply false
+
 }

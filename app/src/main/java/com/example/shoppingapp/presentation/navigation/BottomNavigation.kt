@@ -249,7 +249,7 @@ fun BottomNavigation() {
                         navController.navigate(NavRoute.AddressScreen.route)
                     },
                     onEditContact = {},
-                    onPayClick = { orderId ->
+                    onPayClick = {
 //                        navController.navigate("payment_success/$orderId") {
 //                            popUpTo("payment") { inclusive = true }
 //                        }
