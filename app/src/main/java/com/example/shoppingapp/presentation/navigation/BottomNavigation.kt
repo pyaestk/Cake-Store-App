@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.model.CategoryModel
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.presentation.address.AddressScreen
 import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.category.CategoryScreen
@@ -131,9 +132,11 @@ fun BottomNavigation() {
                             itemId = item.itemId,
                         )
                     },
-                    navigateToPayment = {
-                        navController.navigate(NavRoute.PaymentScreen.route)
+                    navigateToPayment = { cartItemList ->
+                        val checkoutItems = cartItemList.map { CheckoutItem(it.itemId, it.quantity, it.size ?: "") }
+                        navigateToPayment(navController, checkoutItems)
                     }
+
                 )
                 showBottomNav.value = true
             }
@@ -185,6 +188,9 @@ fun BottomNavigation() {
                 val itemId = backStackEntry.arguments?.getInt("itemId") ?: return@composable
 
                 DetailScreen(
+                    navigateToPayment = { item ->
+                        navigateToPayment(navController, item)
+                    },
                     itemId = itemId,
                     onBackClick = { navController.navigateUp() }
                 )
@@ -240,7 +246,15 @@ fun BottomNavigation() {
                 popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
                 popExitTransition = { slideOutHorizontally { it } + fadeOut() }
             ) {
+
+                val checkoutItems =
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.get<List<CheckoutItem>>("checkout_items")
+                        .orEmpty()
+
                 PaymentScreen(
+                    checkoutItems = checkoutItems,
                     navController = navController,
                     onBackClick = {
                         navController.navigateUp()
@@ -250,13 +264,11 @@ fun BottomNavigation() {
                     },
                     onEditContact = {},
                     onPayClick = {
-//                        navController.navigate("payment_success/$orderId") {
-//                            popUpTo("payment") { inclusive = true }
+//                        navController.navigate(NavRoute.CartScreen.route) {
+//                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
+//                            launchSingleTop = true
 //                        }
-                        navController.navigate(NavRoute.CartScreen.route) {
-                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
-                            launchSingleTop = true
-                        }
+                        navController.navigateUp()
                     }
                 )
                 showBottomNav.value = false
@@ -279,6 +291,12 @@ private fun navigateToCategory(navController: NavController, categoryModel: Cate
     )
     navController.navigate(NavRoute.CategoryScreen.route)
 }
+
+private fun navigateToPayment(navController: NavController, items: List<CheckoutItem>) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("checkout_items", items)
+    navController.navigate(NavRoute.PaymentScreen.route)
+}
+
 
 sealed class BottomNavItems(val route: String, val title: String, val icon: Int) {
     object Home : BottomNavItems(NavRoute.HomeScreen.route, "Home", icon = R.drawable.btn_1)

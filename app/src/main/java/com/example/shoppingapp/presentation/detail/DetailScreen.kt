@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.shoppingapp.R
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.ItemModel
 import com.example.shoppingapp.presentation.detail.component.HeaderSection
 import com.example.shoppingapp.presentation.detail.component.ImageThumbnail
@@ -60,7 +62,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     itemId: Int,
     onBackClick: () -> Unit,
-    navigateToPayment: (() -> Unit)? = null ,
+    navigateToPayment: (List<CheckoutItem>) -> Unit,
     detailViewModel: DetailScreenViewModel = koinViewModel(),
 ) {
     val state by detailViewModel.state.collectAsState()
@@ -214,7 +216,21 @@ fun DetailScreen(
                     .padding(horizontal = 16.dp)
             ) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                        val selectedSize =
+                            if (item.size.isNotEmpty() && selectedModelIndex < item.size.size)
+                                item.size[selectedModelIndex]
+                            else ""
+
+                        val buyNowItems = listOf(
+                            CheckoutItem(
+                                itemId = item.id,
+                                qty = 1,
+                                size = selectedSize
+                            )
+                        )
+                        navigateToPayment(buyNowItems)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
@@ -286,7 +302,7 @@ private fun SellerInfoSection(item: ItemModel) {
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(10.dp)
+                    shape = CircleShape
                 )
         )
         Text(

@@ -3,6 +3,7 @@ package com.example.shoppingapp.presentation.payment
 import PaymentUiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.ShippingOption
 import com.example.shoppingapp.domain.usecase.payment.PaymentUseCase
 import com.example.shoppingapp.domain.util.Response
@@ -21,7 +22,6 @@ class PaymentViewModel(
 
     init {
         loadAddress()
-        load()
     }
 
     fun onEvent(event: PaymentUiEvent) {
@@ -31,6 +31,7 @@ class PaymentViewModel(
             PaymentUiEvent.Pay -> pay()
             PaymentUiEvent.ClearError -> _state.update { it.copy(error = null) }
             PaymentUiEvent.OrderSuccess ->  _state.update { it.copy(lastOrderId = null) }
+            is PaymentUiEvent.LoadForItems -> loadForItems(event.items)
         }
     }
 
@@ -64,7 +65,7 @@ class PaymentViewModel(
                 is Response.Loading<*> -> {
                     _state.update {
                         it.copy(
-                            isLoading = false,
+                            isLoading = true,
                         )
                     }
                 }
@@ -72,57 +73,57 @@ class PaymentViewModel(
         }
     }
 
-    private fun load() = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true, error = null) }
-
-        when (val res = useCase.getPaymentSummary()) {
-            is Response.Success -> {
-                val summary = res.data
-                if (summary == null) {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            error = "No shipping address found. Please add your address."
-                        )
-                    }
-                    return@launch
-                }
-
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        items = summary.items,
-                        selectedShipping = summary.selectedShipping,
-                        selectedPaymentMethod = summary.selectedPaymentMethod,
-                        itemsTotal = summary.itemsTotal,
-                        shippingFee = summary.shippingFee,
-                        grandTotal = summary.grandTotal,
-                        lastOrderId = null
-                    )
-                }
-            }
-
-            is Response.Error -> {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = res.message ?: "Unknown error"
-                    )
-                }
-            }
-
-            is Response.Loading<*> -> {
-                _state.update { it.copy(isLoading = true) }
-            }
-        }
-    }
+//    private fun load() = viewModelScope.launch {
+//        _state.update { it.copy(isLoading = true, error = null) }
+//
+//        when (val res = useCase.getPaymentSummary()) {
+//            is Response.Success -> {
+//                val summary = res.data
+//                if (summary == null) {
+//                    _state.update {
+//                        it.copy(
+//                            isLoading = false,
+//                            error = "No shipping address found. Please add your address."
+//                        )
+//                    }
+//                    return@launch
+//                }
+//
+//                _state.update {
+//                    it.copy(
+//                        isLoading = false,
+//                        items = summary.items,
+//                        selectedShipping = summary.selectedShipping,
+//                        selectedPaymentMethod = summary.selectedPaymentMethod,
+//                        itemsTotal = summary.itemsTotal,
+//                        shippingFee = summary.shippingFee,
+//                        grandTotal = summary.grandTotal,
+//                        lastOrderId = null
+//                    )
+//                }
+//            }
+//
+//            is Response.Error -> {
+//                _state.update {
+//                    it.copy(
+//                        isLoading = false,
+//                        error = res.message ?: "Unknown error"
+//                    )
+//                }
+//            }
+//
+//            is Response.Loading<*> -> {
+//                _state.update { it.copy(isLoading = true) }
+//            }
+//        }
+//    }
 
     private fun changeShipping(option: ShippingOption) =
         viewModelScope.launch {
             _state.update { it.copy(selectedShipping = option) }
 
             when (val res = useCase.setShippingOption(option)) {
-                is Response.Success -> load() // refresh totals
+                is Response.Success -> refreshSummary()
                 is Response.Error -> _state.update {
                     it.copy(error = res.message ?: "Failed to update shipping")
                 }
@@ -138,7 +139,7 @@ class PaymentViewModel(
             _state.update { it.copy(selectedPaymentMethod = method) }
 
             when (val res = useCase.setPaymentMethod(method)) {
-                is Response.Success -> Unit
+                is Response.Success -> refreshSummary()
                 is Response.Error -> _state.update {
                     it.copy(error = res.message ?: "Failed to update payment method")
                 }
@@ -179,6 +180,43 @@ class PaymentViewModel(
             is Response.Loading<*> -> {
                 _state.update { it.copy(isLoading = true) }
             }
+        }
+    }
+
+    private fun refreshSummary() {
+        val items = _state.value.checkoutItems
+        if (items.isNotEmpty()) {
+            loadForItems(items)
+        } else {
+            _state.update { it.copy(error = "No items to checkout") }
+        }
+    }
+
+
+    private fun loadForItems(items: List<CheckoutItem>) = viewModelScope.launch {
+        _state.update { it.copy(isLoading = true, error = null, checkoutItems = items) }
+
+        when (val res = useCase.getPaymentSummaryForItems(items)) {
+            is Response.Success -> {
+                val summary = res.data ?: run {
+                    _state.update { it.copy(isLoading = false, error = "Failed to load payment") }
+                    return@launch
+                }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        items = summary.items,
+                        selectedShipping = summary.selectedShipping,
+                        selectedPaymentMethod = summary.selectedPaymentMethod,
+                        itemsTotal = summary.itemsTotal,
+                        shippingFee = summary.shippingFee,
+                        grandTotal = summary.grandTotal,
+                        lastOrderId = null
+                    )
+                }
+            }
+            is Response.Error -> _state.update { it.copy(isLoading = false, error = res.message ?: "Unknown error") }
+            is Response.Loading<*> -> _state.update { it.copy(isLoading = true) }
         }
     }
 }

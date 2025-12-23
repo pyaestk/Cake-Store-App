@@ -47,6 +47,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.shoppingapp.R
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.PaymentItemModel
 import com.example.shoppingapp.presentation.payment.PaymentUiEvent
 import com.example.shoppingapp.presentation.payment.PaymentViewModel
@@ -58,6 +59,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PaymentScreen(
+    checkoutItems: List<CheckoutItem>,
     navController: NavController,
     onBackClick: () -> Unit,
     onEditAddress: () -> Unit,
@@ -69,6 +71,13 @@ fun PaymentScreen(
 
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(checkoutItems) {
+        if (checkoutItems.isNotEmpty()) {
+            viewModel.onEvent(PaymentUiEvent.LoadForItems(checkoutItems))
+        }
+    }
+
+
     val context = LocalContext.current
 
     val openAlertDialog = remember { mutableStateOf(false) }
@@ -77,22 +86,10 @@ fun PaymentScreen(
 
     LaunchedEffect(state.lastOrderId) {
         val orderId = state.lastOrderId ?: return@LaunchedEffect
-
-//        Toast
-//            .makeText(
-//                context,
-//                "Order placed successfully!",
-//                Toast.LENGTH_SHORT
-//            )
-//            .show()
-
-//        onPayClick(orderId)
         openAlertDialog.value = true
-        viewModel.onEvent(PaymentUiEvent.OrderSuccess)
     }
 
     if (openAlertDialog.value) {
-
         // play ONLY after dialog is shown
         LaunchedEffect(Unit) {
             dotLottieController.setLoop(true)
@@ -129,6 +126,7 @@ fun PaymentScreen(
                     Button(
                         onClick = {
                             openAlertDialog.value = false
+                            viewModel.onEvent(PaymentUiEvent.OrderSuccess)
                             onPayClick()
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -214,7 +212,7 @@ fun PaymentScreen(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.width(8.dp))
-                SmallCountPill(count = state.itemCount)
+                SmallCountPill(count = state.items.size)
 
                 Spacer(Modifier.weight(1f))
             }

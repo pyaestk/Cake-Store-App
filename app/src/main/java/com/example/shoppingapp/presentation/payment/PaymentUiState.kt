@@ -1,3 +1,4 @@
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.PaymentItemModel
 import com.example.shoppingapp.domain.model.PaymentMethod
 import com.example.shoppingapp.domain.model.ShippingOption
@@ -7,6 +8,8 @@ data class PaymentUiState(
     val error: String? = null,
 
     val shippingAddress: String = "",
+
+    val checkoutItems: List<CheckoutItem> = emptyList(),
 
     val items: List<PaymentItemModel> = emptyList(),
 
@@ -18,6 +21,4 @@ data class PaymentUiState(
     val grandTotal: Double = 0.0,
 
     val lastOrderId: String? = null
-) {
-    val itemCount: Int get() = items.sumOf { it.qty }
-}
+)

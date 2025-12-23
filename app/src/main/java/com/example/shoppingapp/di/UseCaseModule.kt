@@ -21,6 +21,7 @@ import com.example.shoppingapp.domain.usecase.home.GetBannersUseCase
 import com.example.shoppingapp.domain.usecase.home.GetCategoryUseCase
 import com.example.shoppingapp.domain.usecase.home.GetItemsUseCase
 import com.example.shoppingapp.domain.usecase.home.HomeUseCases
+import com.example.shoppingapp.domain.usecase.payment.GetPaymentSummaryForItemsUseCase
 import com.example.shoppingapp.domain.usecase.payment.GetPaymentSummaryUseCase
 import com.example.shoppingapp.domain.usecase.payment.PayUseCase
 import com.example.shoppingapp.domain.usecase.payment.PaymentUseCase
@@ -151,8 +152,15 @@ val UseCaseModule = module {
             saveShippingAddressUseCase = get()
         )
     }
+
+
     factory{
         GetPaymentSummaryUseCase(
+            get()
+        )
+    }
+    factory {
+        GetPaymentSummaryForItemsUseCase(
             get()
         )
     }
@@ -172,8 +180,11 @@ val UseCaseModule = module {
         )
     }
     factory {
+
+    }
+    factory {
         PaymentUseCase(
-            get(),get(),get(),get(), get()
+            get(),get(),get(),get(), get(), get()
         )
     }
 

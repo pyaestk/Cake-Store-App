@@ -1,5 +1,6 @@
 package com.example.shoppingapp.domain.usecase.payment
 
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.PayResultModel
 import com.example.shoppingapp.domain.model.PaymentMethod
 import com.example.shoppingapp.domain.model.PaymentSummaryModel
@@ -11,6 +12,11 @@ import com.example.shoppingapp.domain.util.Response
 class GetPaymentSummaryUseCase(private val repo: PaymentRepository) {
     suspend operator fun invoke(): Response<PaymentSummaryModel> =
         repo.getPaymentSummary()
+}
+
+class GetPaymentSummaryForItemsUseCase(private val repo: PaymentRepository) {
+    suspend operator fun invoke(items: List<CheckoutItem>): Response<PaymentSummaryModel> =
+        repo.getPaymentSummaryForItems(items)
 }
 
 class SetShippingOptionUseCase(private val repo: PaymentRepository) {
@@ -30,6 +36,7 @@ class PayUseCase(private val repo: PaymentRepository) {
 
 data class PaymentUseCase(
     val getPaymentSummary: GetPaymentSummaryUseCase,
+    val getPaymentSummaryForItems: GetPaymentSummaryForItemsUseCase,
     val setShippingOption: SetShippingOptionUseCase,
     val setPaymentMethod: SetPaymentMethodUseCase,
     val getShippingAddressUseCase: GetShippingAddressUseCase,

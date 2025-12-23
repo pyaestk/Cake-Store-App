@@ -45,7 +45,7 @@ fun CartScreen(
     paddingValues: PaddingValues,
     viewModel: CartScreenViewModel = koinViewModel(),
     onItemClick: (CartItemModel) -> Unit,
-    navigateToPayment: () -> Unit
+    navigateToPayment: (List<CartItemModel>) -> Unit
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -137,7 +137,7 @@ fun CartScreen(
 
                 Button(
                     onClick = {
-                        navigateToPayment.invoke()
+                        navigateToPayment(state.cartItems)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

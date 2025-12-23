@@ -5,6 +5,7 @@ import PaymentItemResponse
 import PaymentSummaryResponse
 import com.example.shoppingapp.data.model.request.AddToCartRequest
 import com.example.shoppingapp.data.model.response.ItemResponse
+import com.example.shoppingapp.domain.model.CheckoutItem
 import com.example.shoppingapp.domain.model.PaymentMethod
 import com.example.shoppingapp.domain.model.ShippingOption
 import com.example.shoppingapp.domain.util.Response
@@ -101,6 +102,62 @@ class PaymentRemoteDataSource(
             Response.Error(e.message ?: "Unknown error")
         }
     }
+
+    suspend fun getPaymentSummaryForItems(itemsInput: List<CheckoutItem>): Response<PaymentSummaryResponse> {
+        val userId = auth.currentUser?.uid ?: return Response.Error("Not signed in")
+
+        return try {
+            // checkout settings
+            val checkoutSnap = checkoutDoc(userId).get().await()
+
+            val selectedShipping = when (checkoutSnap.getString("shippingOption")) {
+                ShippingOption.Express.name -> ShippingOption.Express
+                else -> ShippingOption.Standard
+            }
+
+            val selectedPaymentMethod = when (checkoutSnap.getString("paymentMethod")) {
+                PaymentMethod.CashOnDelivery.name -> PaymentMethod.CashOnDelivery
+                else -> PaymentMethod.Card
+            }
+
+            // load products (Realtime DB) - same as you do now
+            val itemsSnapshot = firebaseDatabase.getReference("Items").get().await()
+            val allItems = itemsSnapshot.children.mapNotNull { it.getValue(ItemResponse::class.java) }
+
+            // join using itemsInput
+            val paymentItems = itemsInput.mapNotNull { ci ->
+                val matching = allItems.find { it.id == ci.itemId}
+                matching?.let {
+                    PaymentItemResponse(
+                        id = ci.itemId.toString(),
+                        title = it.title,
+                        subtitle = "Size: ${ci.size}",
+                        imageUrl = it.picUrl.firstOrNull(),
+                        qty = ci.qty,
+                        price = it.price.toDouble()
+                    )
+                }
+            }
+
+            val itemsTotal = paymentItems.sumOf { it.price * it.qty }
+            val shippingFee = if (selectedShipping == ShippingOption.Express) 12.0 else 0.0
+            val grandTotal = itemsTotal + shippingFee
+
+            Response.Success(
+                PaymentSummaryResponse(
+                    items = paymentItems,
+                    selectedShipping = selectedShipping,
+                    selectedPaymentMethod = selectedPaymentMethod,
+                    itemsTotal = itemsTotal,
+                    shippingFee = shippingFee,
+                    grandTotal = grandTotal
+                )
+            )
+        } catch (e: Exception) {
+            Response.Error(e.message ?: "Unknown error")
+        }
+    }
+
 
     // note: update() fails if doc doesn't exist -> use set(merge=true)
     suspend fun setShippingOption(option: ShippingOption): Response<Unit> {
