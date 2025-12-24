@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -87,7 +86,7 @@ fun CartScreen(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = colorResource(R.color.darkBrown))
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         }
         if (state.cartItems.isEmpty()) {
@@ -205,29 +204,10 @@ fun PriceInformationSection(state: CartScreenState) {
         )
     }
 
-//    Row(
-//        modifier = Modifier,
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        Text(
-//            text = "Tax:",
-//            color = MaterialTheme.colorScheme.onSurfaceVariant,
-//            fontSize = 14.sp
-//        )
-//
-//        Text(
-//            text = "$${10.0}",
-//            modifier = Modifier.weight(1f),
-//            textAlign = TextAlign.End,
-//            color = MaterialTheme.colorScheme.onSurface,
-//            fontSize = 14.sp
-//        )
-//    }
-
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(vertical = 16.dp)
             .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.6f))
             .height(1.dp)
     )

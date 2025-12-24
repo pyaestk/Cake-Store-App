@@ -1,5 +1,7 @@
 package com.example.shoppingapp.presentation.payment
 
+import OrderItemRequest
+import OrderRequest
 import PaymentUiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,7 +32,7 @@ class PaymentViewModel(
             is PaymentUiEvent.ChangePaymentMethod -> changePaymentMethod(event.method)
             PaymentUiEvent.Pay -> pay()
             PaymentUiEvent.ClearError -> _state.update { it.copy(error = null) }
-            PaymentUiEvent.OrderSuccess ->  _state.update { it.copy(lastOrderId = null) }
+            PaymentUiEvent.OrderSuccess -> _state.update { it.copy(lastOrderId = null) }
             is PaymentUiEvent.LoadForItems -> loadForItems(event.items)
         }
     }
@@ -150,38 +152,81 @@ class PaymentViewModel(
             }
         }
 
+//    private fun pay() = viewModelScope.launch {
+//        _state.update { it.copy(isLoading = true, error = null) }
+//
+//        when (val res = useCase.pay()) {
+//            is Response.Success -> {
+//                val result = res.data
+//                if (result == null) {
+//                    _state.update { it.copy(isLoading = false, error = "Payment failed") }
+//                    return@launch
+//                }
+//                _state.update {
+//                    it.copy(
+//                        isLoading = false,
+//                        lastOrderId = result.orderId
+//                    )
+//                }
+//            }
+//
+//            is Response.Error -> {
+//                _state.update {
+//                    it.copy(
+//                        isLoading = false,
+//                        error = res.message ?: "Payment failed"
+//                    )
+//                }
+//            }
+//
+//            is Response.Loading<*> -> {
+//                _state.update { it.copy(isLoading = true) }
+//            }
+//        }
+//    }
+
     private fun pay() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, error = null) }
 
-        when (val res = useCase.pay()) {
+        val s = _state.value
+        if (s.items.isEmpty()) {
+            _state.update { it.copy(isLoading = false, error = "No items to checkout") }
+            return@launch
+        }
+
+        val req = OrderRequest(
+            itemsTotal = s.itemsTotal,
+            shippingFee = s.shippingFee,
+            grandTotal = s.grandTotal,
+            shippingOption = s.selectedShipping.name,
+            paymentMethod = s.selectedPaymentMethod.name,
+            items = s.items.map { item ->
+                OrderItemRequest(
+                    itemId = item.id,
+                    title = item.title,
+                    subtitle = item.subtitle,
+                    imageUrl = item.imageUrl,
+                    qty = item.qty,
+                    price = item.price
+                )
+            }
+        )
+
+        when (val res = useCase.saveOrder(req)) {
             is Response.Success -> {
-                val result = res.data
-                if (result == null) {
-                    _state.update { it.copy(isLoading = false, error = "Payment failed") }
+                val orderId = res.data ?: run {
+                    _state.update { it.copy(isLoading = false, error = "Failed to save order") }
                     return@launch
                 }
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        lastOrderId = result.orderId
-                    )
-                }
+                _state.update { it.copy(isLoading = false, lastOrderId = orderId) }
             }
-
-            is Response.Error -> {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = res.message ?: "Payment failed"
-                    )
-                }
+            is Response.Error -> _state.update {
+                it.copy(isLoading = false, error = res.message ?: "Failed to save order")
             }
-
-            is Response.Loading<*> -> {
-                _state.update { it.copy(isLoading = true) }
-            }
+            is Response.Loading<*> -> _state.update { it.copy(isLoading = true) }
         }
     }
+
 
     private fun refreshSummary() {
         val items = _state.value.checkoutItems

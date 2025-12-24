@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.data.model.request.AddAddressRequest
 import com.example.shoppingapp.domain.usecase.address.AddressScreenUseCase
 import com.example.shoppingapp.domain.util.Response
+import com.example.shoppingapp.presentation.util.Validator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddressViewModel(
+    private val validator: Validator,
     private val useCase: AddressScreenUseCase
 ) : ViewModel() {
 
@@ -42,8 +44,44 @@ class AddressViewModel(
             is AddressUiEvent.CountryChanged ->
                 _uiState.update { it.copy(country = event.country, error = null, isFormValid = false) }
 
-            AddressUiEvent.Submit -> submit()
+            AddressUiEvent.Submit -> {
+                val name = _uiState.value.name
+                val address = _uiState.value.addressNum
+                val city = _uiState.value.city
+                val country = _uiState.value.country
+                val postCode = _uiState.value.zipCode
+                val phoneNum = _uiState.value.phoneNumber
 
+                val nameResult = validator.emptyValidator(name)
+                val addressResult = validator.emptyValidator(address)
+                val cityResult = validator.emptyValidator(city)
+                val countryResult = validator.emptyValidator(country)
+                val postCodeResult = validator.emptyValidator(postCode)
+                val phoneNumResult = validator.emptyValidator(phoneNum)
+
+                if (
+                    nameResult.successful &&
+                    addressResult.successful &&
+                    cityResult.successful &&
+                    countryResult.successful &&
+                    postCodeResult.successful &&
+                    phoneNumResult.successful
+                ) {
+                    submit()
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            nameError = nameResult.errorMessage,
+                            addressError = addressResult.errorMessage,
+                            cityError = cityResult.errorMessage,
+                            countryError = countryResult.errorMessage,
+                            postCodeError = postCodeResult.errorMessage,
+                            phoneNumError = phoneNumResult.errorMessage,
+                            isFormValid = false
+                        )
+                    }
+                }
+            }
         }
     }
 

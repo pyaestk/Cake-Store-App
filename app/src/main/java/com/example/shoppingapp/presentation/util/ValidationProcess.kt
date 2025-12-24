@@ -8,6 +8,8 @@ interface Validator {
     fun emailValidator(email: String): ValidationResult
     fun passwordValidator(password: String): ValidationResult
     fun confirmPasswordValidator(password: String, confirmPassword: String): ValidationResult
+
+    fun emptyValidator(field: String): ValidationResult
 }
 
 class ValidatorImpl(private val context: Context) : Validator {
@@ -101,6 +103,23 @@ class ValidatorImpl(private val context: Context) : Validator {
                 ValidationResult(
                     successful = false,
                     errorMessage = context.getString(R.string.the_passwords_doesn_t_match)
+                )
+            }
+
+            else -> {
+                ValidationResult(
+                    successful = true
+                )
+            }
+        }
+    }
+
+    override fun emptyValidator(field: String): ValidationResult {
+        return when {
+            field.isBlank() -> {
+                ValidationResult(
+                    successful = false,
+                    errorMessage = "This field can't be empty"
                 )
             }
 

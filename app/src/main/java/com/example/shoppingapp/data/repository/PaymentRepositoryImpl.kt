@@ -1,5 +1,6 @@
 package com.example.shoppingapp.data.repository
 
+import OrderRequest
 import com.example.shoppingapp.data.remote.PaymentRemoteDataSource
 import com.example.shoppingapp.data.util.toModel
 import com.example.shoppingapp.domain.model.CheckoutItem
@@ -24,8 +25,9 @@ class PaymentRepositoryImpl(
     override suspend fun setPaymentMethod(method: PaymentMethod): Response<Unit> =
         remote.setPaymentMethod(method)
 
-    override suspend fun pay(): Response<PayResultModel> =
-        remote.pay().map { it.toModel() }
+    override suspend fun saveOrder(request: OrderRequest): Response<String> =
+        remote.saveOrder(request)
+
 
     override suspend fun getPaymentSummaryForItems(items: List<CheckoutItem>): Response<PaymentSummaryModel> =
         remote.getPaymentSummaryForItems(items).map { it.toModel() }

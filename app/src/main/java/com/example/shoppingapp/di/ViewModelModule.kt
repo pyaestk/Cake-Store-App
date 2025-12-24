@@ -9,6 +9,7 @@ import com.example.shoppingapp.presentation.detail.DetailScreenViewModel
 import com.example.shoppingapp.presentation.fav.FavScreenViewModel
 import com.example.shoppingapp.presentation.home.HomeScreenViewModel
 import com.example.shoppingapp.presentation.login.LoginViewModel
+import com.example.shoppingapp.presentation.order.OrderScreenViewModel
 import com.example.shoppingapp.presentation.payment.PaymentViewModel
 import com.example.shoppingapp.presentation.profile.ProfileScreenViewModel
 import com.example.shoppingapp.presentation.register.RegisterViewModel
@@ -71,11 +72,20 @@ val viewModelModule = module {
     }
     viewModel {
         AddressViewModel(
+            ValidatorImpl(
+                get()
+            ),
             get()
         )
     }
     viewModel {
         PaymentViewModel(
+            get()
+        )
+    }
+
+    viewModel {
+        OrderScreenViewModel(
             get()
         )
     }

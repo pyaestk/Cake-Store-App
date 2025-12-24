@@ -23,4 +23,6 @@ sealed class NavRoute(
     object AddressScreen: NavRoute("address")
 
     object PaymentScreen: NavRoute("payment")
+
+    object OrderScreen: NavRoute("order")
 }

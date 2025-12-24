@@ -1,6 +1,6 @@
 package com.example.shoppingapp.data.remote
 
-import PayResultResponse
+import OrderRequest
 import PaymentItemResponse
 import PaymentSummaryResponse
 import com.example.shoppingapp.data.model.request.AddToCartRequest
@@ -185,24 +185,49 @@ class PaymentRemoteDataSource(
         }
     }
 
-    suspend fun pay(): Response<PayResultResponse> {
+    suspend fun saveOrder(request: OrderRequest): Response<String> {
+        val userId = auth.currentUser?.uid ?: return Response.Error("Not signed in")
+
         return try {
-            val userId = auth.currentUser?.uid.toString()
-            val ordersRef = firestore.collection("User")
+            val orderRef = firestore.collection("User")
                 .document(userId)
                 .collection("Orders")
                 .document()
 
-            ordersRef.set(
-                mapOf(
-                    "status" to "success",
-                    "createdAt" to System.currentTimeMillis()
-                )
-            ).await()
+            val batch = firestore.batch()
 
-            Response.Success(PayResultResponse(orderId = ordersRef.id, status = "success"))
+            // header
+            batch.set(orderRef, mapOf(
+                "status" to "success",
+                "createdAt" to System.currentTimeMillis(),
+                "shippingOption" to request.shippingOption,
+                "paymentMethod" to request.paymentMethod,
+                "itemsTotal" to request.itemsTotal,
+                "shippingFee" to request.shippingFee,
+                "grandTotal" to request.grandTotal
+            ))
+
+            // items snapshot
+            request.items.forEach { it ->
+                val itemRef = orderRef.collection("Items").document(it.itemId)
+                batch.set(itemRef, mapOf(
+                    "itemId" to it.itemId,
+                    "title" to it.title,
+                    "subtitle" to it.subtitle,
+                    "imageUrl" to it.imageUrl,
+                    "qty" to it.qty,
+                    "price" to it.price
+                ))
+            }
+
+            batch.commit().await()
+
+            Response.Success(orderRef.id)
         } catch (e: Exception) {
             Response.Error(e.message ?: "Unknown error")
         }
     }
+
+
+
 }

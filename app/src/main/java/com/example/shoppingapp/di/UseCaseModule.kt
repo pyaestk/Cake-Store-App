@@ -21,10 +21,12 @@ import com.example.shoppingapp.domain.usecase.home.GetBannersUseCase
 import com.example.shoppingapp.domain.usecase.home.GetCategoryUseCase
 import com.example.shoppingapp.domain.usecase.home.GetItemsUseCase
 import com.example.shoppingapp.domain.usecase.home.HomeUseCases
+import com.example.shoppingapp.domain.usecase.order.LoadOrders
+import com.example.shoppingapp.domain.usecase.order.OrdersUseCase
 import com.example.shoppingapp.domain.usecase.payment.GetPaymentSummaryForItemsUseCase
 import com.example.shoppingapp.domain.usecase.payment.GetPaymentSummaryUseCase
-import com.example.shoppingapp.domain.usecase.payment.PayUseCase
 import com.example.shoppingapp.domain.usecase.payment.PaymentUseCase
+import com.example.shoppingapp.domain.usecase.payment.SaveOrderUseCase
 import com.example.shoppingapp.domain.usecase.payment.SetPaymentMethodUseCase
 import com.example.shoppingapp.domain.usecase.payment.SetShippingOptionUseCase
 import org.koin.dsl.module
@@ -175,12 +177,9 @@ val UseCaseModule = module {
         )
     }
     factory {
-        PayUseCase(
+        SaveOrderUseCase(
             get()
         )
-    }
-    factory {
-
     }
     factory {
         PaymentUseCase(
@@ -188,4 +187,15 @@ val UseCaseModule = module {
         )
     }
 
+
+    factory {
+        LoadOrders(
+            get()
+        )
+    }
+    factory {
+        OrdersUseCase(
+            get()
+        )
+    }
 }

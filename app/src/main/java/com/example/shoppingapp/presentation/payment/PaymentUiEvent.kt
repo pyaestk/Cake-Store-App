@@ -13,4 +13,5 @@ sealed interface PaymentUiEvent {
     data object ClearError : PaymentUiEvent
 
     data object OrderSuccess : PaymentUiEvent
+
 }

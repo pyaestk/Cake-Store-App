@@ -31,6 +31,7 @@ import com.example.shoppingapp.presentation.detail.DetailScreen
 import com.example.shoppingapp.presentation.fav.FavScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.navigation.component.BottomNavigationBar
+import com.example.shoppingapp.presentation.order.OrderScreen
 import com.example.shoppingapp.presentation.payment.component.PaymentScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 
@@ -163,11 +164,8 @@ fun BottomNavigation() {
                 ) {
                 ProfileScreen(
                     paddingValues = paddingValues,
-                    navigateToAppStart = {
-                        navController.navigate(NavRoute.AppStartNavigation.route) {
-                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
-                            launchSingleTop = true
-                        }
+                    navigateToOrder = {
+                        navController.navigate(NavRoute.OrderScreen.route)
                     },
                     navigateToAddress = {
                         navController.navigate(NavRoute.AddressScreen.route)
@@ -264,10 +262,20 @@ fun BottomNavigation() {
                     },
                     onEditContact = {},
                     onPayClick = {
-//                        navController.navigate(NavRoute.CartScreen.route) {
-//                            popUpTo(NavRoute.MainNavigation.route) { inclusive = true }
-//                            launchSingleTop = true
-//                        }
+                        navController.navigateUp()
+                    }
+                )
+                showBottomNav.value = false
+            }
+            composable(
+                NavRoute.OrderScreen.route,
+                enterTransition = { slideInHorizontally { it } + fadeIn() },
+                exitTransition = { slideOutHorizontally { -it } + fadeOut() },
+                popEnterTransition = { slideInHorizontally { -it } + fadeIn() },
+                popExitTransition = { slideOutHorizontally { it } + fadeOut() }
+            ) {
+                OrderScreen(
+                    onBackClick = {
                         navController.navigateUp()
                     }
                 )

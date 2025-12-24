@@ -1,5 +1,6 @@
 package com.example.shoppingapp.di
 
+import OrderRemoteDataSource
 import com.example.shoppingapp.data.remote.AddressRemoteDataSource
 import com.example.shoppingapp.data.remote.AuthRemoteDataSource
 import com.example.shoppingapp.data.remote.BannerRemoteDataSource
@@ -47,6 +48,12 @@ val RemoteDatasourceModule = module {
     single {
         PaymentRemoteDataSource(
             get(), get(), get()
+        )
+    }
+
+    single {
+        OrderRemoteDataSource(
+            get(), get()
         )
     }
 }

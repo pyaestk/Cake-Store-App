@@ -33,6 +33,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.NameChanged(it))
         }
     )
+    if (state.nameError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.nameError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
         label = "Address",
@@ -44,6 +53,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.AddressChanged(it))
         }
     )
+    if (state.addressError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.addressError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
         label = "Town / City",
@@ -55,6 +73,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.CityChanged(it))
         }
     )
+    if (state.cityError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.cityError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
         label = "Postcode",
@@ -66,6 +93,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.PostCodeChanged(it))
         }
     )
+    if (state.postCodeError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.postCodeError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
         label = "Country",
@@ -77,6 +113,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.CountryChanged(it))
         }
     )
+    if (state.countryError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.countryError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
         label = "Phone number",
@@ -88,6 +133,15 @@ fun AddressFormSection(
             onEvent(AddressUiEvent.PhoneNumChanged(it))
         }
     )
+    if (state.phoneNumError != null) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = state.phoneNumError,
+            color = Color.Red,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Spacer(modifier = Modifier.height(32.dp))
     Button(
         modifier = Modifier

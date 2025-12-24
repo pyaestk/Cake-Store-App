@@ -50,7 +50,7 @@ fun InfoCard(
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = body,
+                    text = if (body.isEmpty()) "Add your address" else body,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

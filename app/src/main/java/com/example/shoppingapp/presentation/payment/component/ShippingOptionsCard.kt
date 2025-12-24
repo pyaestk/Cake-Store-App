@@ -33,7 +33,7 @@ fun ShippingOptionsCard(
     selected: ShippingOption,
     onSelected: (ShippingOption) -> Unit
 ) {
-    val shape = RoundedCornerShape(16.dp)
+    val shape = RoundedCornerShape(15.dp)
 
     Card(
         modifier = Modifier.fillMaxWidth().selectableGroup(),

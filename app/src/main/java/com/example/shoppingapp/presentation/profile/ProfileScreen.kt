@@ -41,20 +41,11 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    navigateToAppStart: (() -> Unit)? = null,
+    navigateToOrder: (() -> Unit)? = null,
     navigateToAddress: (() -> Unit)? = null,
     viewModel: ProfileScreenViewModel = koinViewModel()
 ) {
     val openAlertDialog = remember { mutableStateOf(false) }
-
-//    LaunchedEffect(Unit) {
-//        viewModel.events.collect { event ->
-//            when (event) {
-//                ProfileScreenEvent.NavigateToAppStart -> navigateToAppStart?.invoke()
-//                else -> Unit
-//            }
-//        }
-//    }
 
     if (openAlertDialog.value) {
         AlertDialog(
@@ -187,7 +178,10 @@ fun ProfileScreen(
         SettingItems(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(top = 16.dp),
+                .padding(top = 16.dp)
+                .clickable {
+                    navigateToOrder?.invoke()
+                },
             title = "Order History",
             icon = R.drawable.ic_history
         )

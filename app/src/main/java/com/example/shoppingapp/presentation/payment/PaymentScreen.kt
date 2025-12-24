@@ -106,6 +106,7 @@ fun PaymentScreen(
             ) {
                 Column(
                     modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
                         .fillMaxWidth()
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -121,7 +122,7 @@ fun PaymentScreen(
                         modifier = Modifier.size(120.dp)
                     )
 
-                    Text("Order Success")
+                    Text("Order Successful")
 
                     Button(
                         onClick = {
@@ -153,8 +154,6 @@ fun PaymentScreen(
                 ?.set("address_updated", false)
         }
     }
-
-
 
     if (state.isLoading) {
         Box(

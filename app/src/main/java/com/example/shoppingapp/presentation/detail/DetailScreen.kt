@@ -297,7 +297,7 @@ private fun SellerInfoSection(item: ItemModel) {
                 .width(40.dp)
                 .height(40.dp)
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(10.dp)
+                    color = MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape
                 )
                 .border(
                     width = 1.dp,

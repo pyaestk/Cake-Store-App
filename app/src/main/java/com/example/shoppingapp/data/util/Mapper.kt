@@ -8,12 +8,16 @@ import com.example.shoppingapp.data.model.response.BannerResponse
 import com.example.shoppingapp.data.model.response.CartItemResponse
 import com.example.shoppingapp.data.model.response.CategoryResponse
 import com.example.shoppingapp.data.model.response.ItemResponse
+import com.example.shoppingapp.data.model.response.OrderItemResponse
+import com.example.shoppingapp.data.model.response.OrderResponse
 import com.example.shoppingapp.data.model.response.UserResponse
 import com.example.shoppingapp.domain.model.AddressModel
 import com.example.shoppingapp.domain.model.BannerModel
 import com.example.shoppingapp.domain.model.CartItemModel
 import com.example.shoppingapp.domain.model.CategoryModel
 import com.example.shoppingapp.domain.model.ItemModel
+import com.example.shoppingapp.domain.model.OrderItemModel
+import com.example.shoppingapp.domain.model.OrderModel
 import com.example.shoppingapp.domain.model.PayResultModel
 import com.example.shoppingapp.domain.model.PaymentItemModel
 import com.example.shoppingapp.domain.model.PaymentSummaryModel
@@ -95,4 +99,21 @@ fun PayResultResponse.toModel() = PayResultModel(
     status = status
 )
 
+fun OrderResponse.toModel() = OrderModel(
+    itemsTotal = itemsTotal,
+    shippingFee = shippingFee,
+    grandTotal = grandTotal,
+    shippingOption = shippingOption,
+    paymentMethod = paymentMethod,
+    items = items.map { it.toModel() }
+)
+
+fun OrderItemResponse.toModel() = OrderItemModel(
+    itemId = itemId,
+    title = title,
+    subtitle = subtitle,
+    imageUrl = imageUrl,
+    qty = qty,
+    price = price
+)
 
